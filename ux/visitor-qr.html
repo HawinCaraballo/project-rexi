@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Rexi — QR Visitante</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],display:['Outfit','sans-serif']},colors:{primary:{50:'#f0fdfa',100:'#ccfbf1',600:'#0d9488',700:'#0f766e'}}}}}</script>
+<style>body{font-family:'Inter',sans-serif;}.font-display{font-family:'Outfit',sans-serif;}</style>
+</head>
+<body class="bg-gradient-to-br from-primary-50 to-slate-100 min-h-screen flex items-center justify-center p-4">
+  <div class="w-full max-w-lg">
+
+    <!-- Back -->
+    <div class="flex items-center justify-between mb-6">
+      <a href="visitors-list.html" class="text-slate-500 hover:text-primary-700 text-sm flex items-center gap-1.5">← Volver a visitantes</a>
+      <div class="flex items-center gap-1 bg-white rounded-xl p-1 shadow-sm border border-slate-200">
+        <button onclick="setLang('es')" class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 bg-white shadow-sm">ES</button>
+        <button onclick="setLang('en')" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">EN</button>
+      </div>
+    </div>
+
+    <!-- Success badge -->
+    <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 mb-5 flex items-center gap-3">
+      <span class="text-2xl">✅</span>
+      <div><p class="font-semibold text-emerald-800" id="successMsg">Visitante registrado exitosamente</p><p class="text-sm text-emerald-600" id="successSub">El código QR ya está listo para compartir</p></div>
+    </div>
+
+    <!-- Main card -->
+    <div class="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
+
+      <!-- Header -->
+      <div class="bg-gradient-to-r from-primary-700 to-primary-500 px-6 py-5 text-white">
+        <div class="flex items-center gap-4">
+          <div class="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center text-2xl">👤</div>
+          <div>
+            <h1 class="font-display font-bold text-xl" id="visitorName">Juan Pérez</h1>
+            <p class="text-primary-100 text-sm" id="visitorApt">Visitante de Apto 101-A · Torre A</p>
+            <p class="text-primary-100 text-xs mt-0.5" id="visitorId">CC: 55667788</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-6">
+        <!-- QR Code -->
+        <div class="flex flex-col items-center mb-6">
+          <div class="bg-slate-50 rounded-2xl p-5 border border-slate-200 mb-4" id="qrcode"></div>
+          <p class="text-xs text-slate-400 font-mono bg-slate-100 px-3 py-1.5 rounded-lg" id="qrText">REXI-VIS-2026-001-JP</p>
+        </div>
+
+        <!-- Info chips -->
+        <div class="grid grid-cols-2 gap-3 mb-6">
+          <div class="bg-slate-50 rounded-xl p-3 text-center">
+            <p class="text-xs text-slate-400 mb-0.5" id="typeLabel">Tipo</p>
+            <span class="bg-amber-100 text-amber-700 text-xs font-semibold px-2.5 py-1 rounded-lg" id="visitorType">Temporal</span>
+          </div>
+          <div class="bg-slate-50 rounded-xl p-3 text-center">
+            <p class="text-xs text-slate-400 mb-0.5" id="expiresLabel">Vence</p>
+            <p class="text-sm font-semibold text-slate-800" id="expiryDate">25 abr 2026, 23:59</p>
+          </div>
+          <div class="bg-slate-50 rounded-xl p-3 text-center">
+            <p class="text-xs text-slate-400 mb-0.5" id="remainLabel">Tiempo restante</p>
+            <p class="text-sm font-semibold text-emerald-600" id="remaining">3 días</p>
+          </div>
+          <div class="bg-slate-50 rounded-xl p-3 text-center">
+            <p class="text-xs text-slate-400 mb-0.5" id="vehicleLabel">Vehículo</p>
+            <span class="bg-slate-200 text-slate-700 text-xs font-semibold px-2.5 py-1 rounded-lg font-mono" id="vehiclePlate">ABC-123</span>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="space-y-3">
+          <button onclick="downloadQR()" class="w-full flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3.5 rounded-xl transition-all active:scale-95" id="downloadBtn">
+            ⬇️ <span id="dlLabel">Descargar QR</span>
+          </button>
+          <button onclick="shareWhatsApp()" class="w-full flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3.5 rounded-xl transition-all active:scale-95" id="shareBtn">
+            📲 <span id="shareLabel">Compartir por WhatsApp</span>
+          </button>
+          <button onclick="if(confirm('¿Desactivar este visitante?')){window.location='visitors-list.html';}" class="w-full flex items-center justify-center gap-2 border border-red-200 text-red-600 hover:bg-red-50 font-medium py-3 rounded-xl transition-all text-sm" id="deactivateBtn">
+            🚫 <span id="deactLabel">Desactivar visitante</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+// Generate QR
+window.onload=function(){
+  new QRCode(document.getElementById("qrcode"),{text:"REXI-VIS-2026-001-JP",width:180,height:180,colorDark:"#0f766e",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});
+};
+
+const t={
+  es:{successMsg:'Visitante registrado exitosamente',successSub:'El código QR ya está listo para compartir',typeLabel:'Tipo',expiresLabel:'Vence',remainLabel:'Tiempo restante',vehicleLabel:'Vehículo',dlLabel:'Descargar QR',shareLabel:'Compartir por WhatsApp',deactLabel:'Desactivar visitante'},
+  en:{successMsg:'Visitor registered successfully',successSub:'The QR code is ready to share',typeLabel:'Type',expiresLabel:'Expires',remainLabel:'Time remaining',vehicleLabel:'Vehicle',dlLabel:'Download QR',shareLabel:'Share via WhatsApp',deactLabel:'Deactivate visitor'}
+};
+function setLang(l){Object.keys(t[l]).forEach(id=>{if(document.getElementById(id))document.getElementById(id).textContent=t[l][id];});}
+function downloadQR(){alert('📥 Descargando QR como imagen PNG...');}
+function shareWhatsApp(){window.open('https://wa.me/?text='+encodeURIComponent('Hola! Aquí está el código QR de tu visita al conjunto Las Palmas: REXI-VIS-2026-001-JP'),'_blank');}
+</script>
+</body>
+</html>

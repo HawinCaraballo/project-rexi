@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Rexi — Notificaciones</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800&display=swap" rel="stylesheet"/>
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],display:['Outfit','sans-serif']},colors:{primary:{50:'#f0fdfa',100:'#ccfbf1',600:'#0d9488',700:'#0f766e'}}}}}</script>
+<style>body{font-family:'Inter',sans-serif;}.font-display{font-family:'Outfit',sans-serif;}.sl{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;font-size:14px;color:#475569;cursor:pointer;}.sl:hover,.sl.act{background:#ccfbf1;color:#0d9488;font-weight:600;}.notif.unread{background:#f0fdfa;border-left:3px solid #0d9488;}.notif{border-left:3px solid transparent;transition:all .2s;}.notif:hover{background:#f8fafc;}</style>
+</head>
+<body class="bg-slate-50 min-h-screen flex">
+<aside class="w-64 bg-white border-r border-slate-200 flex-col fixed h-full hidden lg:flex">
+  <div class="p-5 border-b border-slate-100 flex items-center gap-3"><div class="w-9 h-9 bg-primary-600 rounded-xl flex items-center justify-center"><span class="text-white font-display font-bold text-lg">R</span></div><span class="font-display font-bold text-slate-800">Rexi</span></div>
+  <nav class="flex-1 p-3 space-y-0.5 text-sm overflow-y-auto">
+    <div class="sl" onclick="window.location='admin-dashboard.html'"><span>📊</span>Panel</div>
+    <div class="sl" onclick="window.location='fees-list.html'"><span>💰</span>Cuotas</div>
+    <div class="sl" onclick="window.location='visitors-list.html'"><span>🚶</span>Visitantes</div>
+    <div class="sl act"><span>🔔</span>Notificaciones</div>
+    <div class="sl" onclick="window.location='ai-bot.html'"><span>🤖</span>Documentos y Bot</div>
+    <div class="sl" onclick="window.location='emergency-chat.html'"><span>🚨</span>Emergencias</div>
+  </nav>
+  <div class="p-4 border-t border-slate-100 flex items-center gap-3"><div class="w-9 h-9 bg-primary-100 rounded-full flex items-center justify-center text-primary-700 font-bold text-sm">CG</div><div><p class="text-sm font-semibold text-slate-800">Carlos García</p><p class="text-xs text-slate-400">Propietario</p></div></div>
+</aside>
+
+<div class="flex-1 flex flex-col lg:ml-64">
+  <header class="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between sticky top-0 z-10">
+    <div class="flex items-center gap-3">
+      <div>
+        <h1 class="font-display font-bold text-xl text-slate-900">Notificaciones</h1>
+        <p class="text-xs text-slate-400"><span id="unreadCount">5</span> sin leer</p>
+      </div>
+    </div>
+    <div class="flex gap-3 items-center">
+      <div class="hidden sm:flex items-center gap-1 bg-slate-100 rounded-xl p-1"><button class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 bg-white shadow-sm">ES</button><button class="px-3 py-1.5 rounded-lg text-xs text-slate-500">EN</button></div>
+      <button onclick="markAllRead()" class="text-sm text-primary-600 font-medium bg-primary-50 px-4 py-2.5 rounded-xl hover:bg-primary-100 transition-all" id="markAllBtn">✓ Marcar todas como leídas</button>
+    </div>
+  </header>
+
+  <main class="p-6">
+    <div class="grid lg:grid-cols-4 gap-6">
+      <!-- Filters sidebar -->
+      <div class="lg:col-span-1">
+        <div class="bg-white rounded-2xl border border-slate-200 p-4 space-y-1">
+          <p class="text-xs font-semibold text-slate-400 uppercase px-3 mb-2">Filtrar</p>
+          <button onclick="filter('all',this)" class="w-full text-left px-3 py-2.5 rounded-xl text-sm font-semibold bg-primary-50 text-primary-700">Todas <span class="float-right bg-primary-600 text-white text-xs px-2 py-0.5 rounded-lg">28</span></button>
+          <button onclick="filter('unread',this)" class="w-full text-left px-3 py-2.5 rounded-xl text-sm text-slate-600 hover:bg-slate-50">Sin leer <span class="float-right bg-red-500 text-white text-xs px-2 py-0.5 rounded-lg">5</span></button>
+          <div class="border-t border-slate-100 my-2"></div>
+          <p class="text-xs font-semibold text-slate-400 uppercase px-3 mb-1">Por tipo</p>
+          <button class="w-full text-left px-3 py-2.5 rounded-xl text-sm text-slate-600 hover:bg-slate-50">💰 Cuotas y Pagos</button>
+          <button class="w-full text-left px-3 py-2.5 rounded-xl text-sm text-slate-600 hover:bg-slate-50">📦 Paquetes</button>
+          <button class="w-full text-left px-3 py-2.5 rounded-xl text-sm text-slate-600 hover:bg-slate-50">🚶 Visitantes</button>
+          <button class="w-full text-left px-3 py-2.5 rounded-xl text-sm text-slate-600 hover:bg-slate-50">🚫 Multas</button>
+          <button class="w-full text-left px-3 py-2.5 rounded-xl text-sm text-slate-600 hover:bg-slate-50">📅 Reservas</button>
+          <button class="w-full text-left px-3 py-2.5 rounded-xl text-sm text-slate-600 hover:bg-slate-50">📢 Comunicados</button>
+        </div>
+      </div>
+
+      <!-- Notifications list -->
+      <div class="lg:col-span-3">
+        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+          <!-- Unread -->
+          <div class="px-5 py-3 border-b border-slate-100 bg-slate-50">
+            <p class="text-xs font-semibold text-slate-500 uppercase">Hoy</p>
+          </div>
+
+          <div class="notif unread px-5 py-4 flex items-start gap-4 cursor-pointer" onclick="markRead(this)">
+            <div class="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center flex-shrink-0 text-lg">💰</div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-start justify-between gap-2"><p class="font-semibold text-slate-800 text-sm">Cuota en mora — Apto 101-A</p><span class="text-xs text-slate-400 flex-shrink-0">hace 2h</span></div>
+              <p class="text-sm text-slate-500 mt-0.5">Tu cuota de abril 2026 está vencida. Monto: $470,000 · 12 días de mora.</p>
+              <a href="fee-detail.html" class="text-xs text-primary-600 font-medium mt-1.5 inline-block hover:underline">Ver cuota →</a>
+            </div>
+          </div>
+
+          <div class="notif unread px-5 py-4 flex items-start gap-4 cursor-pointer border-t border-slate-50" onclick="markRead(this)">
+            <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0 text-lg">📦</div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-start justify-between gap-2"><p class="font-semibold text-slate-800 text-sm">Paquete en recepción</p><span class="text-xs text-slate-400 flex-shrink-0">hace 3h</span></div>
+              <p class="text-sm text-slate-500 mt-0.5">Tienes un paquete esperando en portería. Remitente: Amazon.</p>
+            </div>
+          </div>
+
+          <div class="notif unread px-5 py-4 flex items-start gap-4 cursor-pointer border-t border-slate-50" onclick="markRead(this)">
+            <div class="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center flex-shrink-0 text-lg">🚶</div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-start justify-between gap-2"><p class="font-semibold text-slate-800 text-sm">Visitante en portería</p><span class="text-xs text-slate-400 flex-shrink-0">hace 5h</span></div>
+              <p class="text-sm text-slate-500 mt-0.5">Juan Pérez llegó con su código QR y fue autorizado a las 10:30 AM.</p>
+            </div>
+          </div>
+
+          <div class="px-5 py-3 border-t border-slate-100 bg-slate-50">
+            <p class="text-xs font-semibold text-slate-500 uppercase">Esta semana</p>
+          </div>
+
+          <div class="notif px-5 py-4 flex items-start gap-4 cursor-pointer border-t border-slate-50">
+            <div class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center flex-shrink-0 text-lg">📢</div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-start justify-between gap-2"><p class="font-semibold text-slate-800 text-sm">Comunicado de la Administración</p><span class="text-xs text-slate-400 flex-shrink-0">hace 2 días</span></div>
+              <p class="text-sm text-slate-500 mt-0.5">Asamblea de propietarios el próximo sábado 27 de abril a las 3:00 PM en el salón social.</p>
+            </div>
+          </div>
+
+          <div class="notif px-5 py-4 flex items-start gap-4 cursor-pointer border-t border-slate-50">
+            <div class="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center flex-shrink-0 text-lg">📅</div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-start justify-between gap-2"><p class="font-semibold text-slate-800 text-sm">Reserva confirmada — Salón Social</p><span class="text-xs text-slate-400 flex-shrink-0">hace 3 días</span></div>
+              <p class="text-sm text-slate-500 mt-0.5">Tu reserva para el 2 de mayo, 2:00–6:00 PM ha sido confirmada.</p>
+            </div>
+          </div>
+
+          <div class="notif px-5 py-4 flex items-start gap-4 cursor-pointer border-t border-slate-50">
+            <div class="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0 text-lg">🚫</div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-start justify-between gap-2"><p class="font-semibold text-slate-800 text-sm">Multa aprobada — Apto 101-A</p><span class="text-xs text-slate-400 flex-shrink-0">hace 4 días</span></div>
+              <p class="text-sm text-slate-500 mt-0.5">La multa por parqueo en zona peatonal ($80,000) ha sido aprobada. Puedes apelar hasta el 27 de abril.</p>
+              <div class="flex gap-2 mt-1.5"><a href="fines-list.html" class="text-xs text-primary-600 font-medium hover:underline">Ver multa →</a><button class="text-xs text-amber-600 font-medium hover:underline">Apelar</button></div>
+            </div>
+          </div>
+
+          <!-- Load more -->
+          <div class="px-5 py-4 border-t border-slate-100 text-center">
+            <button class="text-sm text-primary-600 font-medium hover:underline">Cargar más notificaciones</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+function markRead(el){el.classList.remove('unread');const n=parseInt(document.getElementById('unreadCount').textContent);document.getElementById('unreadCount').textContent=Math.max(0,n-1);}
+function markAllRead(){document.querySelectorAll('.notif.unread').forEach(n=>n.classList.remove('unread'));document.getElementById('unreadCount').textContent='0';}
+function filter(type,btn){document.querySelectorAll('button').forEach(b=>{if(b.onclick&&b.onclick.toString().includes('filter'))b.className=b.className.replace('bg-primary-50 text-primary-700 font-semibold','text-slate-600 hover:bg-slate-50');});btn.className=btn.className.replace('text-slate-600 hover:bg-slate-50','bg-primary-50 text-primary-700 font-semibold');}
+</script>
+</body>
+</html>

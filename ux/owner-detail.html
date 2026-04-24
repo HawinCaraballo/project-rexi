@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Rexi — Carlos García</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800&display=swap" rel="stylesheet"/>
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],display:['Outfit','sans-serif']},colors:{primary:{50:'#f0fdfa',100:'#ccfbf1',500:'#14b8a6',600:'#0d9488',700:'#0f766e'}}}}}</script>
+<style>body{font-family:'Inter',sans-serif;}.font-display{font-family:'Outfit',sans-serif;}.sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;font-size:14px;color:#475569;cursor:pointer;transition:all .15s;}.sidebar-link:hover,.sidebar-link.active{background:#ccfbf1;color:#0d9488;font-weight:600;}.tab{padding:10px 20px;font-size:14px;font-weight:500;color:#64748b;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;}.tab.active{color:#0d9488;border-color:#0d9488;font-weight:600;}.tab-panel{display:none;}.tab-panel.active{display:block;}</style>
+</head>
+<body class="bg-slate-50 min-h-screen flex">
+
+<!-- Sidebar -->
+<aside class="w-64 bg-white border-r border-slate-200 flex-col fixed h-full z-20 hidden lg:flex">
+  <div class="p-5 border-b border-slate-100 flex items-center gap-3"><div class="w-9 h-9 bg-primary-600 rounded-xl flex items-center justify-center"><span class="text-white font-display font-bold text-lg">R</span></div><span class="font-display font-bold text-slate-800 text-lg">Rexi</span></div>
+  <div class="px-4 py-3 border-b border-slate-100"><div class="bg-slate-50 rounded-xl px-3 py-2.5"><p class="text-xs text-slate-400">Conjunto</p><p class="text-sm font-semibold text-slate-800">Las Palmas</p></div></div>
+  <nav class="flex-1 p-3 space-y-0.5 overflow-y-auto text-sm">
+    <div class="sidebar-link" onclick="window.location='admin-dashboard.html'"><span>📊</span>Panel</div>
+    <div class="sidebar-link active"><span>👥</span>Propietarios</div>
+    <div class="sidebar-link"><span>🏠</span>Arrendatarios</div>
+    <div class="sidebar-link" onclick="window.location='fees-list.html'"><span>💰</span>Cuotas</div>
+    <div class="sidebar-link" onclick="window.location='visitors-list.html'"><span>🚶</span>Visitantes</div>
+    <div class="sidebar-link" onclick="window.location='fines-list.html'"><span>🚫</span>Multas</div>
+    <div class="sidebar-link" onclick="window.location='reports.html'"><span>📈</span>Informes</div>
+  </nav>
+  <div class="p-4 border-t border-slate-100 flex items-center gap-3"><div class="w-9 h-9 bg-primary-100 rounded-full flex items-center justify-center text-primary-700 font-bold text-sm">AN</div><div><p class="text-sm font-semibold text-slate-800">Ana Martínez</p><p class="text-xs text-slate-400">Administradora</p></div></div>
+</aside>
+
+<div class="flex-1 flex flex-col lg:ml-64">
+  <header class="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between sticky top-0 z-10">
+    <div class="flex items-center gap-3">
+      <a href="owners-list.html" class="text-slate-400 hover:text-slate-600 text-lg">←</a>
+      <div><nav class="text-xs text-slate-400 mb-0.5"><a href="owners-list.html" class="hover:text-primary-600">Propietarios</a> / <span class="text-slate-600 font-medium">Carlos García</span></nav><h1 class="font-display font-bold text-xl text-slate-900">Carlos García</h1></div>
+    </div>
+    <div class="flex items-center gap-3">
+      <div class="hidden sm:flex items-center gap-1 bg-slate-100 rounded-xl p-1"><button onclick="setLang('es')" class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 bg-white shadow-sm">ES</button><button onclick="setLang('en')" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">EN</button></div>
+      <a href="owner-form.html" class="flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-all">✏️ Editar</a>
+    </div>
+  </header>
+
+  <main class="p-6">
+    <!-- Profile header card -->
+    <div class="bg-white rounded-2xl border border-slate-200 p-6 mb-5 flex flex-col sm:flex-row items-start sm:items-center gap-6">
+      <div class="relative">
+        <div class="w-20 h-20 bg-gradient-to-br from-primary-400 to-primary-700 rounded-2xl flex items-center justify-center text-white font-display font-bold text-3xl">CG</div>
+        <span class="absolute -bottom-1 -right-1 w-6 h-6 bg-emerald-500 border-2 border-white rounded-full flex items-center justify-center text-white text-xs">✓</span>
+      </div>
+      <div class="flex-1">
+        <h2 class="font-display font-bold text-2xl text-slate-900">Carlos García</h2>
+        <p class="text-slate-500 text-sm mt-0.5">carlos@gmail.com · CC 12345678</p>
+        <div class="flex flex-wrap gap-2 mt-3">
+          <span class="bg-emerald-100 text-emerald-700 text-xs font-semibold px-3 py-1 rounded-lg">● Activo</span>
+          <span class="bg-primary-100 text-primary-700 text-xs font-medium px-3 py-1 rounded-lg">🏠 101-A Torre A</span>
+          <span class="bg-slate-100 text-slate-600 text-xs font-medium px-3 py-1 rounded-lg">📞 310-555-1234</span>
+        </div>
+      </div>
+      <div class="grid grid-cols-3 gap-4 text-center">
+        <div class="bg-slate-50 rounded-xl p-3"><p class="font-display font-bold text-xl text-slate-900">1</p><p class="text-xs text-slate-400">Apto(s)</p></div>
+        <div class="bg-red-50 rounded-xl p-3"><p class="font-display font-bold text-xl text-red-600">$470K</p><p class="text-xs text-slate-400">En mora</p></div>
+        <div class="bg-slate-50 rounded-xl p-3"><p class="font-display font-bold text-xl text-slate-900">2</p><p class="text-xs text-slate-400">Vehículos</p></div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+      <div class="flex border-b border-slate-100 overflow-x-auto px-2">
+        <button class="tab active" onclick="showTab('info', this)" id="t-info">Información</button>
+        <button class="tab" onclick="showTab('apts', this)" id="t-apts">Apartamentos</button>
+        <button class="tab" onclick="showTab('family', this)" id="t-family">Familia</button>
+        <button class="tab" onclick="showTab('tenants', this)" id="t-tenants">Arrendatario</button>
+        <button class="tab" onclick="showTab('fees', this)" id="t-fees">Cuotas</button>
+      </div>
+
+      <!-- Info tab -->
+      <div class="tab-panel active p-6" id="panel-info">
+        <div class="grid sm:grid-cols-2 gap-6">
+          <div class="space-y-4">
+            <div><p class="text-xs font-medium text-slate-400 uppercase tracking-wider mb-1">Nombre completo</p><p class="text-sm font-semibold text-slate-800">Carlos Alberto García Mejía</p></div>
+            <div><p class="text-xs font-medium text-slate-400 uppercase tracking-wider mb-1">Tipo y número de ID</p><p class="text-sm font-semibold text-slate-800">CC · 12345678</p></div>
+            <div><p class="text-xs font-medium text-slate-400 uppercase tracking-wider mb-1">Correo electrónico</p><p class="text-sm font-semibold text-slate-800">carlos@gmail.com</p></div>
+            <div><p class="text-xs font-medium text-slate-400 uppercase tracking-wider mb-1">Teléfono</p><p class="text-sm font-semibold text-slate-800">310-555-1234</p></div>
+          </div>
+          <div class="space-y-4">
+            <div><p class="text-xs font-medium text-slate-400 uppercase tracking-wider mb-1">Fecha de registro</p><p class="text-sm font-semibold text-slate-800">15 de enero 2025</p></div>
+            <div><p class="text-xs font-medium text-slate-400 uppercase tracking-wider mb-1">Último acceso</p><p class="text-sm font-semibold text-slate-800">Hoy, 9:45 AM</p></div>
+            <div><p class="text-xs font-medium text-slate-400 uppercase tracking-wider mb-1">Estado de cuenta</p><span class="bg-emerald-100 text-emerald-700 text-xs font-semibold px-2.5 py-1 rounded-lg">Activa</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Apts tab -->
+      <div class="tab-panel p-6" id="panel-apts">
+        <div class="flex items-center justify-between mb-4"><h3 class="font-semibold text-slate-800">Apartamentos asignados</h3><button class="text-sm text-primary-600 font-medium bg-primary-50 px-4 py-2 rounded-xl hover:bg-primary-100 transition-all">+ Asignar apto</button></div>
+        <div class="border border-slate-200 rounded-xl overflow-hidden">
+          <div class="flex items-center gap-4 p-4 border-b border-slate-100 last:border-0">
+            <div class="w-10 h-10 bg-primary-100 rounded-xl flex items-center justify-center text-primary-700 font-bold">A</div>
+            <div class="flex-1"><p class="font-semibold text-slate-800">Apartamento 101-A</p><p class="text-xs text-slate-400">Torre A · Piso 1 · 85 m² · Parqueadero asignado P-01</p></div>
+            <div class="text-right"><p class="text-sm font-bold text-slate-800">$470,000</p><p class="text-xs text-slate-400">/mes</p></div>
+            <a href="fee-detail.html" class="text-xs text-primary-600 font-medium bg-primary-50 px-3 py-1.5 rounded-lg">Ver cuota</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Family tab -->
+      <div class="tab-panel p-6" id="panel-family">
+        <div class="flex items-center justify-between mb-4"><h3 class="font-semibold text-slate-800">Miembros del hogar</h3><button class="text-sm text-primary-600 font-medium bg-primary-50 px-4 py-2 rounded-xl hover:bg-primary-100 transition-all">+ Agregar</button></div>
+        <div class="space-y-3">
+          <div class="flex items-center gap-3 p-4 bg-slate-50 rounded-xl border border-slate-200">
+            <div class="w-10 h-10 bg-rose-100 rounded-full flex items-center justify-center text-rose-600 font-bold text-sm">LG</div>
+            <div class="flex-1"><p class="font-semibold text-slate-800 text-sm">Laura García</p><p class="text-xs text-slate-400">Cónyuge · 38 años</p></div>
+            <button class="text-red-400 hover:text-red-600 text-sm transition-all">🗑</button>
+          </div>
+          <div class="flex items-center gap-3 p-4 bg-slate-50 rounded-xl border border-slate-200">
+            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-sm">AG</div>
+            <div class="flex-1"><p class="font-semibold text-slate-800 text-sm">Andrés García</p><p class="text-xs text-slate-400">Hijo · 15 años</p></div>
+            <button class="text-red-400 hover:text-red-600 text-sm transition-all">🗑</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tenants tab -->
+      <div class="tab-panel p-6" id="panel-tenants">
+        <div class="flex items-center justify-between mb-4"><h3 class="font-semibold text-slate-800">Arrendatario(s)</h3><a href="owner-form.html" class="text-sm text-primary-600 font-medium bg-primary-50 px-4 py-2 rounded-xl hover:bg-primary-100 transition-all">+ Registrar arrendatario</a></div>
+        <div class="text-center py-8 text-slate-400"><span class="text-4xl mb-3 block">🏠</span><p class="text-sm">Este apartamento no tiene arrendatario activo.</p><p class="text-xs mt-1">El propietario lo ocupa directamente.</p></div>
+      </div>
+
+      <!-- Fees tab -->
+      <div class="tab-panel p-6" id="panel-fees">
+        <div class="flex items-center justify-between mb-4"><h3 class="font-semibold text-slate-800">Historial de cuotas</h3><a href="fees-list.html" class="text-xs text-primary-600 font-medium">Ver todas →</a></div>
+        <div class="space-y-2">
+          <div class="flex items-center gap-4 p-3 rounded-xl border border-red-200 bg-red-50"><div class="flex-1"><p class="text-sm font-semibold text-slate-800">Abril 2026</p><p class="text-xs text-red-500">12 días en mora</p></div><span class="bg-red-100 text-red-700 text-xs font-bold px-2.5 py-1 rounded-lg">En mora</span><p class="text-sm font-bold text-red-600">$470K</p><a href="fee-detail.html" class="text-xs text-primary-600 font-medium bg-white px-3 py-1.5 rounded-lg border border-slate-200">Ver</a></div>
+          <div class="flex items-center gap-4 p-3 rounded-xl border border-slate-100 bg-white"><div class="flex-1"><p class="text-sm font-semibold text-slate-800">Marzo 2026</p><p class="text-xs text-slate-400">Pagado el 8 mar 2026</p></div><span class="bg-emerald-100 text-emerald-700 text-xs font-bold px-2.5 py-1 rounded-lg">Pagado</span><p class="text-sm font-bold text-slate-800">$470K</p><a href="fee-detail.html" class="text-xs text-primary-600 font-medium bg-primary-50 px-3 py-1.5 rounded-lg">Ver</a></div>
+          <div class="flex items-center gap-4 p-3 rounded-xl border border-slate-100 bg-white"><div class="flex-1"><p class="text-sm font-semibold text-slate-800">Febrero 2026</p><p class="text-xs text-slate-400">Pagado el 5 feb 2026</p></div><span class="bg-emerald-100 text-emerald-700 text-xs font-bold px-2.5 py-1 rounded-lg">Pagado</span><p class="text-sm font-bold text-slate-800">$460K</p><a href="fee-detail.html" class="text-xs text-primary-600 font-medium bg-primary-50 px-3 py-1.5 rounded-lg">Ver</a></div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+function showTab(id, btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+function setLang(l){}
+</script>
+</body>
+</html>

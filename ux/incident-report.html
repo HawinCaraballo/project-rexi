@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Rexi — Reportar Incidente</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800&display=swap" rel="stylesheet"/>
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],display:['Outfit','sans-serif']},colors:{primary:{50:'#f0fdfa',100:'#ccfbf1',600:'#0d9488',700:'#0f766e'}}}}}</script>
+<style>body{font-family:'Inter',sans-serif;}.font-display{font-family:'Outfit',sans-serif;}.sl{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;font-size:14px;color:#475569;cursor:pointer;}.sl:hover,.sl.act{background:#ccfbf1;color:#0d9488;font-weight:600;}.step-card{transition:all .3s ease;}</style>
+</head>
+<body class="bg-slate-50 min-h-screen flex flex-col items-center justify-center p-4">
+<div class="w-full max-w-md space-y-6">
+  <header class="text-center mb-8">
+    <div class="w-16 h-16 bg-primary-600 rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-xl shadow-primary-600/20"><span class="text-white text-3xl">⚠️</span></div>
+    <h1 class="font-display font-bold text-2xl text-slate-900">Reportar Incidente</h1>
+    <p class="text-slate-500 text-sm mt-1">Nuestra IA categorizará tu reporte para agilizar la atención.</p>
+  </header>
+
+  <div id="form-container" class="bg-white rounded-[2.5rem] border border-slate-200 shadow-xl overflow-hidden">
+    <div id="step-1" class="p-8 space-y-6 animate-in fade-in slide-in-from-right-4">
+      <div>
+        <label class="block text-sm font-bold text-slate-800 mb-3">¿Qué sucedió?</label>
+        <textarea id="description" rows="4" class="w-full px-5 py-4 rounded-2xl border border-slate-200 text-sm focus:ring-2 focus:ring-primary-600 focus:outline-none transition-all resize-none" placeholder="Describe el problema lo más detallado posible..."></textarea>
+      </div>
+      <div>
+        <label class="block text-sm font-bold text-slate-800 mb-3">Evidencia (Opcional)</label>
+        <div class="grid grid-cols-3 gap-3">
+          <div class="aspect-square bg-slate-100 rounded-2xl border-2 border-dashed border-slate-200 flex flex-col items-center justify-center text-slate-400 cursor-pointer hover:bg-slate-200 transition-colors">
+            <span class="text-xl">+</span><span class="text-[10px] font-bold">Foto</span>
+          </div>
+          <div class="aspect-square bg-slate-50 rounded-2xl border border-slate-100"></div>
+          <div class="aspect-square bg-slate-50 rounded-2xl border border-slate-100"></div>
+        </div>
+      </div>
+      <button onclick="analyzeReport()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-4 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2">Enviar Reporte 🚀</button>
+    </div>
+
+    <!-- AI Analysis Screen -->
+    <div id="step-2" class="p-10 space-y-8 hidden flex-col items-center text-center animate-in fade-in zoom-in">
+      <div class="relative w-24 h-24">
+        <div class="absolute inset-0 bg-primary-100 rounded-full animate-ping opacity-25"></div>
+        <div class="relative w-24 h-24 bg-primary-600 rounded-full flex items-center justify-center text-white text-4xl shadow-xl shadow-primary-600/30">🤖</div>
+      </div>
+      <div class="space-y-2">
+        <h2 class="font-display font-bold text-xl text-slate-900">IA Analizando...</h2>
+        <p class="text-slate-500 text-sm">Categorizando prioridad y asignando departamento responsable.</p>
+      </div>
+      <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden"><div class="bg-primary-600 h-full w-0 animate-[progress_2s_ease-in-out_forwards]"></div></div>
+    </div>
+
+    <!-- AI Success Result -->
+    <div id="step-3" class="p-8 space-y-6 hidden animate-in fade-in slide-in-from-bottom-4">
+      <div class="bg-emerald-50 border border-emerald-100 p-5 rounded-3xl flex items-start gap-4">
+        <div class="text-2xl">✅</div>
+        <div>
+          <h3 class="font-bold text-emerald-800 text-sm">Reporte Recibido</h3>
+          <p class="text-xs text-emerald-600 mt-1">La IA ha categorizado tu solicitud con éxito.</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="flex justify-between items-center p-4 bg-slate-50 rounded-2xl">
+          <p class="text-xs text-slate-500 font-bold uppercase">Categoría</p>
+          <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-[10px] font-black uppercase tracking-widest">Mantenimiento</span>
+        </div>
+        <div class="flex justify-between items-center p-4 bg-slate-50 rounded-2xl">
+          <p class="text-xs text-slate-500 font-bold uppercase">Prioridad AI</p>
+          <span class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-[10px] font-black uppercase tracking-widest">Alta (Crítica)</span>
+        </div>
+        <div class="flex justify-between items-center p-4 bg-slate-50 rounded-2xl">
+          <p class="text-xs text-slate-500 font-bold uppercase">Ticket ID</p>
+          <p class="text-sm font-bold text-slate-800">#RX-4482</p>
+        </div>
+      </div>
+      <button onclick="window.location='admin-dashboard.html'" class="w-full bg-primary-600 hover:bg-primary-700 text-white font-bold py-4 rounded-2xl transition-all shadow-lg">Entendido</button>
+    </div>
+  </div>
+
+  <p class="text-center text-xs text-slate-400">¿Es una emergencia vital? <a href="emergency-chat.html" class="text-red-500 font-bold underline">Usa el Chat de Emergencia</a></p>
+</div>
+
+<script>
+function analyzeReport() {
+  document.getElementById('step-1').classList.add('hidden');
+  document.getElementById('step-2').classList.remove('hidden');
+  document.getElementById('step-2').classList.add('flex');
+  setTimeout(() => {
+    document.getElementById('step-2').classList.add('hidden');
+    document.getElementById('step-2').classList.remove('flex');
+    document.getElementById('step-3').classList.remove('hidden');
+  }, 2500);
+}
+</script>
+<style>
+@keyframes progress { from { width: 0%; } to { width: 100%; } }
+.animate-in { animation-duration: 0.5s; }
+</style>
+</body>
+</html>

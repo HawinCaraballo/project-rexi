@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Rexi — Nuevo Propietario</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800&display=swap" rel="stylesheet"/>
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],display:['Outfit','sans-serif']},colors:{primary:{50:'#f0fdfa',100:'#ccfbf1',500:'#14b8a6',600:'#0d9488',700:'#0f766e'}}}}}</script>
+<style>body{font-family:'Inter',sans-serif;}.font-display{font-family:'Outfit',sans-serif;}.sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;font-size:14px;color:#475569;cursor:pointer;transition:all .15s;}.sidebar-link:hover,.sidebar-link.active{background:#ccfbf1;color:#0d9488;font-weight:600;}.input-field{width:100%;padding:10px 14px;border-radius:12px;border:1px solid #e2e8f0;font-size:14px;outline:none;transition:all .15s;}.input-field:focus{border-color:#0d9488;box-shadow:0 0 0 3px rgba(13,148,136,.1);}</style>
+</head>
+<body class="bg-slate-50 min-h-screen flex">
+
+<!-- Sidebar -->
+<aside class="w-64 bg-white border-r border-slate-200 flex-col fixed h-full z-20 hidden lg:flex">
+  <div class="p-5 border-b border-slate-100 flex items-center gap-3">
+    <div class="w-9 h-9 bg-primary-600 rounded-xl flex items-center justify-center"><span class="text-white font-display font-bold text-lg">R</span></div>
+    <span class="font-display font-bold text-slate-800 text-lg">Rexi</span>
+  </div>
+  <div class="px-4 py-3 border-b border-slate-100"><div class="bg-slate-50 rounded-xl px-3 py-2.5"><p class="text-xs text-slate-400">Conjunto</p><p class="text-sm font-semibold text-slate-800">Las Palmas</p></div></div>
+  <nav class="flex-1 p-3 space-y-0.5 overflow-y-auto text-sm">
+    <div class="sidebar-link" onclick="window.location='admin-dashboard.html'"><span>📊</span>Panel</div>
+    <div class="sidebar-link active"><span>👥</span>Propietarios</div>
+    <div class="sidebar-link"><span>🏠</span>Arrendatarios</div>
+    <div class="sidebar-link" onclick="window.location='fees-list.html'"><span>💰</span>Cuotas</div>
+    <div class="sidebar-link" onclick="window.location='visitors-list.html'"><span>🚶</span>Visitantes</div>
+    <div class="sidebar-link" onclick="window.location='common-areas.html'"><span>🏊</span>Zonas Comunes</div>
+    <div class="sidebar-link" onclick="window.location='fines-list.html'"><span>🚫</span>Multas</div>
+    <div class="sidebar-link" onclick="window.location='reports.html'"><span>📈</span>Informes</div>
+  </nav>
+  <div class="p-4 border-t border-slate-100 flex items-center gap-3">
+    <div class="w-9 h-9 bg-primary-100 rounded-full flex items-center justify-center text-primary-700 font-bold text-sm">AN</div>
+    <div><p class="text-sm font-semibold text-slate-800">Ana Martínez</p><p class="text-xs text-slate-400">Administradora</p></div>
+  </div>
+</aside>
+
+<div class="flex-1 flex flex-col lg:ml-64">
+  <header class="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between sticky top-0 z-10">
+    <div class="flex items-center gap-3">
+      <a href="owners-list.html" class="text-slate-400 hover:text-slate-600 transition-colors text-lg">←</a>
+      <div>
+        <nav class="text-xs text-slate-400 mb-0.5"><a href="owners-list.html" class="hover:text-primary-600">Propietarios</a> / <span class="text-slate-600 font-medium">Nuevo Propietario</span></nav>
+        <h1 class="font-display font-bold text-xl text-slate-900" id="pageTitle">Nuevo Propietario</h1>
+      </div>
+    </div>
+    <div class="hidden sm:flex items-center gap-1 bg-slate-100 rounded-xl p-1">
+      <button onclick="setLang('es')" class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 bg-white shadow-sm">ES</button>
+      <button onclick="setLang('en')" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">EN</button>
+    </div>
+  </header>
+
+  <main class="p-6 max-w-4xl mx-auto w-full">
+    <form onsubmit="handleSubmit(event)">
+
+      <!-- Section 1: Personal Info -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-6 mb-5">
+        <h2 class="font-semibold text-slate-800 mb-5 flex items-center gap-2"><span class="w-6 h-6 bg-primary-100 rounded-lg flex items-center justify-center text-primary-700 text-xs font-bold">1</span> <span id="s1title">Información Personal</span></h2>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5" id="fnLabel">Nombre *</label>
+            <input class="input-field" placeholder="Carlos" required/>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5" id="lnLabel">Apellido *</label>
+            <input class="input-field" placeholder="García" required/>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5" id="idTypeLabel">Tipo de ID *</label>
+            <select class="input-field bg-white">
+              <option>CC — Cédula de Ciudadanía</option>
+              <option>CE — Cédula de Extranjería</option>
+              <option>NIT</option>
+              <option>Pasaporte</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5" id="idNumLabel">Número de ID *</label>
+            <input class="input-field" placeholder="12345678" required pattern="[0-9A-Za-z]{5,20}"/>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5" id="emailLabel">Correo electrónico *</label>
+            <div class="relative">
+              <input id="emailInput" class="input-field pr-10" type="email" placeholder="carlos@email.com" required oninput="checkEmail()"/>
+              <span id="emailStatus" class="absolute right-3 top-1/2 -translate-y-1/2 text-sm hidden">✓</span>
+            </div>
+            <p id="emailHint" class="text-xs text-slate-400 mt-1">Será el usuario de acceso a la plataforma</p>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5" id="phoneLabel">Teléfono</label>
+            <input class="input-field" placeholder="310-555-1234" type="tel"/>
+          </div>
+        </div>
+        <!-- Photo upload -->
+        <div class="mt-4">
+          <label class="block text-sm font-medium text-slate-700 mb-2" id="photoLabel">Foto de perfil</label>
+          <div class="border-2 border-dashed border-slate-200 rounded-xl p-6 text-center hover:border-primary-400 transition-all cursor-pointer" onclick="document.getElementById('photoFile').click()">
+            <span class="text-3xl mb-2 block">📷</span>
+            <p class="text-sm text-slate-500" id="photoText">Arrastra una imagen o haz clic para seleccionar</p>
+            <p class="text-xs text-slate-400 mt-1">JPG, PNG, WebP · Máx 2MB</p>
+            <input id="photoFile" type="file" accept="image/*" class="hidden" onchange="showPreview(event)"/>
+          </div>
+          <img id="photoPreview" class="hidden mt-3 w-20 h-20 rounded-full object-cover border-4 border-primary-100 mx-auto"/>
+        </div>
+      </div>
+
+      <!-- Section 2: Apartment Assignment -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-6 mb-5">
+        <h2 class="font-semibold text-slate-800 mb-5 flex items-center gap-2"><span class="w-6 h-6 bg-primary-100 rounded-lg flex items-center justify-center text-primary-700 text-xs font-bold">2</span> <span id="s2title">Asignación de Apartamento(s)</span></h2>
+        <p class="text-xs text-slate-500 mb-3" id="aptHint">Selecciona al menos un apartamento de este conjunto</p>
+        <div class="space-y-2" id="aptList">
+          <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:border-primary-300 hover:bg-primary-50 cursor-pointer transition-all has-[:checked]:border-primary-500 has-[:checked]:bg-primary-50">
+            <input type="checkbox" class="accent-primary-600 w-4 h-4"/>
+            <div><p class="text-sm font-medium text-slate-800">Apto 101-A · Torre A · Piso 1</p><p class="text-xs text-slate-400">Sin propietario asignado · Coef: 0.015</p></div>
+          </label>
+          <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:border-primary-300 hover:bg-primary-50 cursor-pointer transition-all has-[:checked]:border-primary-500 has-[:checked]:bg-primary-50">
+            <input type="checkbox" class="accent-primary-600 w-4 h-4"/>
+            <div><p class="text-sm font-medium text-slate-800">Apto 102-A · Torre A · Piso 1</p><p class="text-xs text-slate-400">Sin propietario asignado · Coef: 0.012</p></div>
+          </label>
+          <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:border-primary-300 hover:bg-primary-50 cursor-pointer transition-all has-[:checked]:border-primary-500 has-[:checked]:bg-primary-50">
+            <input type="checkbox" class="accent-primary-600 w-4 h-4"/>
+            <div><p class="text-sm font-medium text-slate-800">Apto 203-B · Torre B · Piso 2</p><p class="text-xs text-slate-400">Sin propietario asignado · Coef: 0.018</p></div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Section 3: Family Members -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-6 mb-5">
+        <div class="flex items-center justify-between mb-5">
+          <h2 class="font-semibold text-slate-800 flex items-center gap-2"><span class="w-6 h-6 bg-slate-100 rounded-lg flex items-center justify-center text-slate-500 text-xs font-bold">3</span> <span id="s3title">Miembros del Hogar</span> <span class="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded-lg ml-1">Opcional</span></h2>
+          <button type="button" onclick="addFamilyMember()" class="flex items-center gap-1.5 text-sm text-primary-600 hover:text-primary-700 font-medium bg-primary-50 px-3 py-2 rounded-xl transition-all">
+            <span>+</span><span id="addFamBtn">Agregar miembro</span>
+          </button>
+        </div>
+        <div id="familyList" class="space-y-3"></div>
+        <p id="noFamilyMsg" class="text-sm text-slate-400 text-center py-4">No hay miembros del hogar agregados</p>
+      </div>
+
+      <!-- Footer actions -->
+      <div class="flex items-center justify-between bg-white rounded-2xl border border-slate-200 p-4">
+        <p class="text-xs text-slate-400" id="reqMsg">* Campos requeridos · Se enviará correo de bienvenida al propietario</p>
+        <div class="flex gap-3">
+          <a href="owners-list.html" class="px-5 py-2.5 rounded-xl border border-slate-200 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-all" id="cancelBtn">Cancelar</a>
+          <button type="submit" class="px-6 py-2.5 rounded-xl bg-primary-600 hover:bg-primary-700 active:scale-95 text-white text-sm font-semibold transition-all shadow-lg shadow-primary-600/20" id="saveBtn">Guardar Propietario</button>
+        </div>
+      </div>
+    </form>
+  </main>
+</div>
+
+<script>
+let familyCount=0;
+function setLang(l){
+  const t={es:{pageTitle:'Nuevo Propietario',s1title:'Información Personal',s2title:'Asignación de Apartamento(s)',s3title:'Miembros del Hogar',addFamBtn:'Agregar miembro',cancelBtn:'Cancelar',saveBtn:'Guardar Propietario',reqMsg:'* Campos requeridos · Se enviará correo de bienvenida'},en:{pageTitle:'New Owner',s1title:'Personal Information',s2title:'Apartment Assignment',s3title:'Household Members',addFamBtn:'Add member',cancelBtn:'Cancel',saveBtn:'Save Owner',reqMsg:'* Required fields · Welcome email will be sent'}};
+  Object.keys(t[l]).forEach(id=>{if(document.getElementById(id))document.getElementById(id).textContent=t[l][id];});
+}
+function checkEmail(){
+  const v=document.getElementById('emailInput').value;
+  const ok=v.includes('@') && v.length>5;
+  document.getElementById('emailStatus').textContent=ok?'✓':'';
+  document.getElementById('emailStatus').className='absolute right-3 top-1/2 -translate-y-1/2 text-sm '+(ok?'text-emerald-500':'hidden');
+}
+function showPreview(e){
+  const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader(); r.onload=ev=>{
+    const p=document.getElementById('photoPreview');
+    p.src=ev.target.result; p.classList.remove('hidden');
+  }; r.readAsDataURL(f);
+}
+function addFamilyMember(){
+  familyCount++;
+  const div=document.createElement('div');
+  div.className='grid sm:grid-cols-4 gap-3 p-4 bg-slate-50 rounded-xl border border-slate-200';
+  div.innerHTML=`<input class="input-field bg-white" placeholder="Nombre"/><input class="input-field bg-white" placeholder="Apellido"/><select class="input-field bg-white"><option>Cónyuge</option><option>Hijo/a</option><option>Padre/Madre</option><option>Otro</option></select><div class="flex items-center"><button type="button" onclick="this.parentElement.parentElement.remove()" class="text-red-400 hover:text-red-600 transition-all text-lg w-full flex items-center justify-center">🗑</button></div>`;
+  document.getElementById('familyList').appendChild(div);
+  document.getElementById('noFamilyMsg').style.display='none';
+}
+function handleSubmit(e){
+  e.preventDefault();
+  alert('✅ Propietario guardado. Se envió correo de bienvenida.');
+  window.location='owners-list.html';
+}
+</script>
+</body>
+</html>

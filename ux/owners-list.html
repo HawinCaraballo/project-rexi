@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Rexi — Propietarios</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800&display=swap" rel="stylesheet"/>
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],display:['Outfit','sans-serif']},colors:{primary:{50:'#f0fdfa',100:'#ccfbf1',500:'#14b8a6',600:'#0d9488',700:'#0f766e'}}}}}</script>
+<style>
+body{font-family:'Inter',sans-serif;}.font-display{font-family:'Outfit',sans-serif;}
+.sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;font-size:14px;color:#475569;cursor:pointer;transition:all .15s;}
+.sidebar-link:hover,.sidebar-link.active{background:#ccfbf1;color:#0d9488;font-weight:600;}
+tr:hover td{background:#f8fafc;}
+</style>
+</head>
+<body class="bg-slate-50 min-h-screen flex">
+
+<!-- Sidebar (compact) -->
+<aside class="w-64 bg-white border-r border-slate-200 flex-col fixed h-full z-20 hidden lg:flex">
+  <div class="p-5 border-b border-slate-100 flex items-center gap-3">
+    <div class="w-9 h-9 bg-primary-600 rounded-xl flex items-center justify-center"><span class="text-white font-display font-bold text-lg">R</span></div>
+    <span class="font-display font-bold text-slate-800 text-lg">Rexi</span>
+  </div>
+  <div class="px-4 py-3 border-b border-slate-100"><div class="bg-slate-50 rounded-xl px-3 py-2.5"><p class="text-xs text-slate-400">Conjunto</p><p class="text-sm font-semibold text-slate-800">Las Palmas</p></div></div>
+  <nav class="flex-1 p-3 space-y-0.5 overflow-y-auto text-sm">
+    <div class="sidebar-link" onclick="window.location='admin-dashboard.html'"><span>📊</span>Panel</div>
+    <div class="sidebar-link" onclick="window.location='complexes-list.html'"><span>🏢</span>Conjuntos</div>
+    <div class="sidebar-link active"><span>👥</span>Propietarios</div>
+    <div class="sidebar-link"><span>🏠</span>Arrendatarios</div>
+    <div class="sidebar-link" onclick="window.location='fees-list.html'"><span>💰</span>Cuotas</div>
+    <div class="sidebar-link"><span>💳</span>Pagos</div>
+    <div class="sidebar-link" onclick="window.location='visitors-list.html'"><span>🚶</span>Visitantes</div>
+    <div class="sidebar-link" onclick="window.location='vehicles-list.html'"><span>🚗</span>Vehículos</div>
+    <div class="sidebar-link" onclick="window.location='common-areas.html'"><span>🏊</span>Zonas Comunes</div>
+    <div class="sidebar-link" onclick="window.location='fines-list.html'"><span>🚫</span>Multas</div>
+    <div class="sidebar-link" onclick="window.location='notifications.html'"><span>🔔</span>Notificaciones</div>
+    <div class="sidebar-link" onclick="window.location='ai-bot.html'"><span>🤖</span>Documentos y Bot</div>
+    <div class="sidebar-link" onclick="window.location='reports.html'"><span>📈</span>Informes</div>
+    <div class="sidebar-link" onclick="window.location='settings.html'"><span>⚙️</span>Configuración</div>
+  </nav>
+  <div class="p-4 border-t border-slate-100 flex items-center gap-3">
+    <div class="w-9 h-9 bg-primary-100 rounded-full flex items-center justify-center text-primary-700 font-bold text-sm">AN</div>
+    <div class="flex-1 min-w-0"><p class="text-sm font-semibold text-slate-800 truncate">Ana Martínez</p><p class="text-xs text-slate-400">Administradora</p></div>
+  </div>
+</aside>
+
+<div class="flex-1 flex flex-col lg:ml-64">
+  <!-- Topbar -->
+  <header class="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between sticky top-0 z-10">
+    <div>
+      <h1 class="font-display font-bold text-xl text-slate-900" id="pgTitle">Propietarios</h1>
+      <p class="text-xs text-slate-400">Las Palmas · <span id="totalCount">60 propietarios registrados</span></p>
+    </div>
+    <div class="flex items-center gap-3">
+      <div class="hidden sm:flex items-center gap-1 bg-slate-100 rounded-xl p-1">
+        <button onclick="setLang('es')" class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 bg-white shadow-sm">ES</button>
+        <button onclick="setLang('en')" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">EN</button>
+      </div>
+      <a href="owner-form.html" class="flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-all">
+        <span>+</span><span id="newBtn">Nuevo Propietario</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="p-6">
+    <!-- Filters -->
+    <div class="bg-white rounded-2xl border border-slate-200 p-4 mb-4 flex flex-col sm:flex-row gap-3">
+      <div class="relative flex-1">
+        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">🔍</span>
+        <input type="text" id="searchInput" placeholder="Buscar por nombre, cédula, email o apartamento..." class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm" oninput="filterTable()"/>
+      </div>
+      <select id="towerFilter" class="px-3 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white" onchange="filterTable()">
+        <option value="">Todas las torres</option>
+        <option value="Torre A">Torre A</option>
+        <option value="Torre B">Torre B</option>
+      </select>
+      <select id="statusFilter" class="px-3 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white" onchange="filterTable()">
+        <option value="">Todos los estados</option>
+        <option value="Activo">Activo</option>
+        <option value="Inactivo">Inactivo</option>
+      </select>
+    </div>
+
+    <!-- Table -->
+    <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead>
+            <tr class="border-b border-slate-100 bg-slate-50">
+              <th class="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Propietario</th>
+              <th class="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Identificación</th>
+              <th class="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Apartamento(s)</th>
+              <th class="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Teléfono</th>
+              <th class="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Estado</th>
+              <th class="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="ownerTable">
+            <tr class="border-b border-slate-50 cursor-pointer transition-colors">
+              <td class="px-5 py-4"><div class="flex items-center gap-3"><div class="w-9 h-9 bg-primary-100 rounded-full flex items-center justify-center text-primary-700 font-bold text-sm flex-shrink-0">CG</div><div><p class="text-sm font-semibold text-slate-800">Carlos García</p><p class="text-xs text-slate-400">carlos@gmail.com</p></div></div></td>
+              <td class="px-5 py-4 text-sm text-slate-600">CC · 12345678</td>
+              <td class="px-5 py-4"><div class="flex gap-1 flex-wrap"><span class="bg-primary-100 text-primary-700 text-xs font-medium px-2 py-0.5 rounded-lg">101-A</span></div></td>
+              <td class="px-5 py-4 text-sm text-slate-600">310-555-1234</td>
+              <td class="px-5 py-4"><span class="bg-emerald-100 text-emerald-700 text-xs font-semibold px-2.5 py-1 rounded-lg">Activo</span></td>
+              <td class="px-5 py-4"><div class="flex gap-2"><a href="owner-detail.html" class="text-xs text-primary-600 hover:text-primary-700 font-medium bg-primary-50 px-3 py-1.5 rounded-lg transition-all">Ver</a><a href="owner-form.html" class="text-xs text-slate-600 hover:text-slate-800 font-medium bg-slate-100 px-3 py-1.5 rounded-lg transition-all">Editar</a></div></td>
+            </tr>
+            <tr class="border-b border-slate-50 cursor-pointer transition-colors">
+              <td class="px-5 py-4"><div class="flex items-center gap-3"><div class="w-9 h-9 bg-purple-100 rounded-full flex items-center justify-center text-purple-700 font-bold text-sm flex-shrink-0">MR</div><div><p class="text-sm font-semibold text-slate-800">María Rodríguez</p><p class="text-xs text-slate-400">maria.r@hotmail.com</p></div></div></td>
+              <td class="px-5 py-4 text-sm text-slate-600">CC · 98765432</td>
+              <td class="px-5 py-4"><div class="flex gap-1 flex-wrap"><span class="bg-primary-100 text-primary-700 text-xs font-medium px-2 py-0.5 rounded-lg">203-B</span><span class="bg-primary-100 text-primary-700 text-xs font-medium px-2 py-0.5 rounded-lg">204-B</span></div></td>
+              <td class="px-5 py-4 text-sm text-slate-600">315-888-9900</td>
+              <td class="px-5 py-4"><span class="bg-emerald-100 text-emerald-700 text-xs font-semibold px-2.5 py-1 rounded-lg">Activo</span></td>
+              <td class="px-5 py-4"><div class="flex gap-2"><a href="owner-detail.html" class="text-xs text-primary-600 hover:text-primary-700 font-medium bg-primary-50 px-3 py-1.5 rounded-lg">Ver</a><a href="owner-form.html" class="text-xs text-slate-600 font-medium bg-slate-100 px-3 py-1.5 rounded-lg">Editar</a></div></td>
+            </tr>
+            <tr class="border-b border-slate-50 cursor-pointer transition-colors">
+              <td class="px-5 py-4"><div class="flex items-center gap-3"><div class="w-9 h-9 bg-amber-100 rounded-full flex items-center justify-center text-amber-700 font-bold text-sm flex-shrink-0">JS</div><div><p class="text-sm font-semibold text-slate-800">Jorge Suárez</p><p class="text-xs text-slate-400">jsuarez@email.com</p></div></div></td>
+              <td class="px-5 py-4 text-sm text-slate-600">CE · 45678901</td>
+              <td class="px-5 py-4"><div class="flex gap-1 flex-wrap"><span class="bg-primary-100 text-primary-700 text-xs font-medium px-2 py-0.5 rounded-lg">304-A</span></div></td>
+              <td class="px-5 py-4 text-sm text-slate-600">321-444-5566</td>
+              <td class="px-5 py-4"><span class="bg-emerald-100 text-emerald-700 text-xs font-semibold px-2.5 py-1 rounded-lg">Activo</span></td>
+              <td class="px-5 py-4"><div class="flex gap-2"><a href="owner-detail.html" class="text-xs text-primary-600 font-medium bg-primary-50 px-3 py-1.5 rounded-lg">Ver</a><a href="owner-form.html" class="text-xs text-slate-600 font-medium bg-slate-100 px-3 py-1.5 rounded-lg">Editar</a></div></td>
+            </tr>
+            <tr class="border-b border-slate-50 cursor-pointer transition-colors">
+              <td class="px-5 py-4"><div class="flex items-center gap-3"><div class="w-9 h-9 bg-rose-100 rounded-full flex items-center justify-center text-rose-700 font-bold text-sm flex-shrink-0">LM</div><div><p class="text-sm font-semibold text-slate-800">Luisa Mora</p><p class="text-xs text-slate-400">luisamora@gmail.com</p></div></div></td>
+              <td class="px-5 py-4 text-sm text-slate-600">CC · 56781234</td>
+              <td class="px-5 py-4"><div class="flex gap-1 flex-wrap"><span class="bg-primary-100 text-primary-700 text-xs font-medium px-2 py-0.5 rounded-lg">501-A</span></div></td>
+              <td class="px-5 py-4 text-sm text-slate-600">300-777-8899</td>
+              <td class="px-5 py-4"><span class="bg-slate-100 text-slate-500 text-xs font-semibold px-2.5 py-1 rounded-lg">Inactivo</span></td>
+              <td class="px-5 py-4"><div class="flex gap-2"><a href="owner-detail.html" class="text-xs text-primary-600 font-medium bg-primary-50 px-3 py-1.5 rounded-lg">Ver</a><a href="owner-form.html" class="text-xs text-slate-600 font-medium bg-slate-100 px-3 py-1.5 rounded-lg">Editar</a></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- Pagination -->
+      <div class="px-5 py-4 border-t border-slate-100 flex items-center justify-between">
+        <p class="text-sm text-slate-500">Mostrando 4 de 60 propietarios</p>
+        <div class="flex items-center gap-2">
+          <button class="w-9 h-9 rounded-xl border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-slate-50 disabled:opacity-40" disabled>←</button>
+          <button class="w-9 h-9 rounded-xl bg-primary-600 text-white font-semibold text-sm">1</button>
+          <button class="w-9 h-9 rounded-xl border border-slate-200 text-slate-600 text-sm hover:bg-slate-50">2</button>
+          <button class="w-9 h-9 rounded-xl border border-slate-200 text-slate-600 text-sm hover:bg-slate-50">3</button>
+          <button class="w-9 h-9 rounded-xl border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-slate-50">→</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+function setLang(l){
+  document.getElementById('pgTitle').textContent=l==='es'?'Propietarios':'Owners';
+  document.getElementById('totalCount').textContent=l==='es'?'60 propietarios registrados':'60 registered owners';
+  document.getElementById('newBtn').textContent=l==='es'?'Nuevo Propietario':'New Owner';
+}
+function filterTable(){
+  const q=document.getElementById('searchInput').value.toLowerCase();
+  document.querySelectorAll('#ownerTable tr').forEach(r=>{r.style.display=r.innerText.toLowerCase().includes(q)?'':'none';});
+}
+</script>
+</body>
+</html>

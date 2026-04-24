@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es" data-lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rexi — Iniciar Sesión</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter','sans-serif'], display: ['Outfit','sans-serif'] },
+          colors: { primary: { 50:'#f0fdfa',100:'#ccfbf1',500:'#14b8a6',600:'#0d9488',700:'#0f766e',900:'#134e4a' } }
+        }
+      }
+    }
+
+    const i18n = {
+      es: {
+        title: 'Bienvenido a Rexi',
+        subtitle: 'Gestiona tu conjunto residencial desde un solo lugar.',
+        emailLabel: 'Correo electrónico',
+        emailPlaceholder: 'tu@email.com',
+        passwordLabel: 'Contraseña',
+        passwordPlaceholder: '••••••••',
+        forgotPassword: '¿Olvidaste tu contraseña?',
+        signIn: 'Iniciar Sesión',
+        signing: 'Iniciando sesión...',
+        errorMsg: 'Correo o contraseña incorrectos. Inténtalo de nuevo.',
+        tagline: 'Tu conjunto, simplificado.',
+        feature1: 'Gestión de propietarios y arrendatarios',
+        feature2: 'Control de acceso con QR y reconocimiento facial',
+        feature3: 'Administración de cuotas y pagos',
+        feature4: 'Bot de inteligencia artificial para normas',
+      },
+      en: {
+        title: 'Welcome to Rexi',
+        subtitle: 'Manage your residential complex from one place.',
+        emailLabel: 'Email address',
+        emailPlaceholder: 'you@email.com',
+        passwordLabel: 'Password',
+        passwordPlaceholder: '••••••••',
+        forgotPassword: 'Forgot your password?',
+        signIn: 'Sign In',
+        signing: 'Signing in...',
+        errorMsg: 'Invalid email or password. Please try again.',
+        tagline: 'Your complex, simplified.',
+        feature1: 'Owner & tenant management',
+        feature2: 'QR & facial recognition access control',
+        feature3: 'Fee & payment administration',
+        feature4: 'AI-powered rules & document bot',
+      }
+    };
+
+    function setLang(lang) {
+      document.documentElement.setAttribute('data-lang', lang);
+      const t = i18n[lang];
+      document.getElementById('title').textContent = t.title;
+      document.getElementById('subtitle').textContent = t.subtitle;
+      document.getElementById('emailLabel').textContent = t.emailLabel;
+      document.getElementById('emailInput').placeholder = t.emailPlaceholder;
+      document.getElementById('passwordLabel').textContent = t.passwordLabel;
+      document.getElementById('passwordInput').placeholder = t.passwordPlaceholder;
+      document.getElementById('forgotLink').textContent = t.forgotPassword;
+      document.getElementById('signInBtn').textContent = t.signIn;
+      document.getElementById('tagline').textContent = t.tagline;
+      document.getElementById('feature1').textContent = t.feature1;
+      document.getElementById('feature2').textContent = t.feature2;
+      document.getElementById('feature3').textContent = t.feature3;
+      document.getElementById('feature4').textContent = t.feature4;
+      document.getElementById('errorMsg').textContent = t.errorMsg;
+      document.querySelectorAll('[data-lang-btn]').forEach(b => b.classList.toggle('font-bold', b.dataset.langBtn === lang));
+    }
+
+    function togglePassword() {
+      const inp = document.getElementById('passwordInput');
+      const ico = document.getElementById('eyeIcon');
+      inp.type = inp.type === 'password' ? 'text' : 'password';
+      ico.textContent = inp.type === 'password' ? '👁' : '🙈';
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const btn = document.getElementById('signInBtn');
+      const lang = document.documentElement.getAttribute('data-lang');
+      btn.textContent = i18n[lang].signing;
+      btn.disabled = true;
+      setTimeout(() => {
+        document.getElementById('errorBanner').classList.remove('hidden');
+        btn.textContent = i18n[lang].signIn;
+        btn.disabled = false;
+      }, 1500);
+    }
+  </script>
+</head>
+<body class="min-h-screen bg-slate-50 font-sans flex" onload="setLang('es')">
+
+  <!-- Left panel — Brand -->
+  <div class="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary-900 via-primary-700 to-primary-500 flex-col justify-between p-12 relative overflow-hidden">
+    <!-- Decorative circles -->
+    <div class="absolute -top-24 -left-24 w-80 h-80 bg-white/5 rounded-full"></div>
+    <div class="absolute -bottom-16 -right-16 w-96 h-96 bg-white/5 rounded-full"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-white/3 rounded-full"></div>
+
+    <!-- Logo -->
+    <div class="relative">
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 bg-white/20 backdrop-blur rounded-2xl flex items-center justify-center">
+          <span class="text-white font-display font-bold text-2xl">R</span>
+        </div>
+        <span class="text-white font-display font-bold text-2xl">Rexi</span>
+      </div>
+    </div>
+
+    <!-- Center content -->
+    <div class="relative">
+      <h2 id="tagline" class="text-white font-display font-bold text-4xl leading-tight mb-10">Tu conjunto, simplificado.</h2>
+      <ul class="space-y-5">
+        <li class="flex items-start gap-4">
+          <div class="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <span class="text-white text-sm">👥</span>
+          </div>
+          <span id="feature1" class="text-white/80 leading-relaxed">Gestión de propietarios y arrendatarios</span>
+        </li>
+        <li class="flex items-start gap-4">
+          <div class="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <span class="text-white text-sm">🔐</span>
+          </div>
+          <span id="feature2" class="text-white/80 leading-relaxed">Control de acceso con QR y reconocimiento facial</span>
+        </li>
+        <li class="flex items-start gap-4">
+          <div class="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <span class="text-white text-sm">💰</span>
+          </div>
+          <span id="feature3" class="text-white/80 leading-relaxed">Administración de cuotas y pagos</span>
+        </li>
+        <li class="flex items-start gap-4">
+          <div class="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <span class="text-white text-sm">🤖</span>
+          </div>
+          <span id="feature4" class="text-white/80 leading-relaxed">Bot de inteligencia artificial para normas</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Footer brand -->
+    <div class="relative">
+      <p class="text-white/40 text-sm">© 2026 Rexi Platform</p>
+    </div>
+  </div>
+
+  <!-- Right panel — Form -->
+  <div class="flex-1 flex flex-col">
+    <!-- Mobile logo + lang switcher -->
+    <div class="flex items-center justify-between px-8 py-5 border-b border-slate-200 lg:border-none">
+      <div class="flex items-center gap-2 lg:hidden">
+        <div class="w-8 h-8 bg-primary-600 rounded-xl flex items-center justify-center">
+          <span class="text-white font-display font-bold">R</span>
+        </div>
+        <span class="font-display font-bold text-slate-800">Rexi</span>
+      </div>
+      <!-- Language switcher -->
+      <div class="ml-auto flex items-center gap-1 bg-slate-100 rounded-xl p-1">
+        <button data-lang-btn="es" onclick="setLang('es')" class="px-3 py-1.5 rounded-lg text-sm font-bold text-slate-600 hover:bg-white transition-all">ES</button>
+        <button data-lang-btn="en" onclick="setLang('en')" class="px-3 py-1.5 rounded-lg text-sm text-slate-500 hover:bg-white transition-all">EN</button>
+      </div>
+    </div>
+
+    <!-- Form area -->
+    <div class="flex-1 flex items-center justify-center px-6 py-12">
+      <div class="w-full max-w-md">
+        <h1 id="title" class="font-display font-bold text-3xl text-slate-900 mb-2">Bienvenido a Rexi</h1>
+        <p id="subtitle" class="text-slate-500 mb-8">Gestiona tu conjunto residencial desde un solo lugar.</p>
+
+        <!-- Error banner -->
+        <div id="errorBanner" class="hidden mb-6 bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3 text-sm flex items-center gap-2">
+          <span>⚠️</span>
+          <span id="errorMsg">Correo o contraseña incorrectos. Inténtalo de nuevo.</span>
+        </div>
+
+        <form id="login-form" onsubmit="handleLogin(event)" class="space-y-5">
+          <!-- Email -->
+          <div>
+            <label id="emailLabel" for="emailInput" class="block text-sm font-medium text-slate-700 mb-2">Correo electrónico</label>
+            <input id="emailInput" type="email" placeholder="tu@email.com" required
+              class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-slate-900 placeholder-slate-400 transition-all" />
+          </div>
+
+          <!-- Password -->
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <label id="passwordLabel" for="passwordInput" class="block text-sm font-medium text-slate-700">Contraseña</label>
+              <a id="forgotLink" href="forgot-password.html" class="text-sm text-primary-600 hover:text-primary-700 font-medium">¿Olvidaste tu contraseña?</a>
+            </div>
+            <div class="relative">
+              <input id="passwordInput" type="password" placeholder="••••••••" required
+                class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-slate-900 placeholder-slate-400 transition-all pr-12" />
+              <button type="button" onclick="togglePassword()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 w-8 h-8 flex items-center justify-center">
+                <span id="eyeIcon">👁</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Submit -->
+          <button id="signInBtn" type="submit"
+            class="w-full bg-primary-600 hover:bg-primary-700 active:scale-95 text-white font-semibold py-3.5 rounded-xl transition-all shadow-lg shadow-primary-600/20">
+            Iniciar Sesión
+          </button>
+        </form>
+
+        <!-- Demo role hint -->
+        <div class="mt-8 p-4 bg-slate-50 border border-slate-200 rounded-xl">
+          <p class="text-xs text-slate-500 font-medium mb-2">Demo credentials:</p>
+          <div class="space-y-1 text-xs text-slate-600">
+            <p>🔑 Admin: <span class="font-mono">admin@rexi.app / Admin123!</span></p>
+            <p>🏠 Owner: <span class="font-mono">carlos@email.com / Owner123!</span></p>
+            <p>👮 Guard: <span class="font-mono">guard@rexi.app / Guard123!</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

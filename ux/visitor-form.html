@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Rexi — Registrar Visitante</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800&display=swap" rel="stylesheet"/>
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],display:['Outfit','sans-serif']},colors:{primary:{50:'#f0fdfa',100:'#ccfbf1',600:'#0d9488',700:'#0f766e'}}}}}</script>
+<style>body{font-family:'Inter',sans-serif;}.font-display{font-family:'Outfit',sans-serif;}.sl{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;font-size:14px;color:#475569;cursor:pointer;}.sl:hover,.sl.act{background:#ccfbf1;color:#0d9488;font-weight:600;}.inp{width:100%;padding:10px 14px;border-radius:12px;border:1px solid #e2e8f0;font-size:14px;outline:none;transition:border-color .15s;}.inp:focus{border-color:#0d9488;box-shadow:0 0 0 3px rgba(13,148,136,.1);}</style>
+</head>
+<body class="bg-slate-50 min-h-screen flex">
+<aside class="w-64 bg-white border-r border-slate-200 flex-col fixed h-full hidden lg:flex">
+  <div class="p-5 border-b border-slate-100 flex items-center gap-3"><div class="w-9 h-9 bg-primary-600 rounded-xl flex items-center justify-center"><span class="text-white font-display font-bold text-lg">R</span></div><span class="font-display font-bold text-slate-800">Rexi</span></div>
+  <nav class="flex-1 p-3 space-y-0.5 text-sm overflow-y-auto">
+    <div class="sl" onclick="window.location='admin-dashboard.html'"><span>📊</span>Panel</div>
+    <div class="sl" onclick="window.location='owners-list.html'"><span>👥</span>Propietarios</div>
+    <div class="sl act"><span>🚶</span>Visitantes</div>
+    <div class="sl" onclick="window.location='vehicles-list.html'"><span>🚗</span>Vehículos</div>
+  </nav>
+  <div class="p-4 border-t border-slate-100 flex items-center gap-3"><div class="w-9 h-9 bg-primary-100 rounded-full flex items-center justify-center text-primary-700 font-bold text-sm">CG</div><div><p class="text-sm font-semibold text-slate-800">Carlos García</p><p class="text-xs text-slate-400">Propietario</p></div></div>
+</aside>
+
+<div class="flex-1 flex flex-col lg:ml-64">
+  <header class="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between sticky top-0 z-10">
+    <div class="flex items-center gap-3">
+      <a href="visitors-list.html" class="text-slate-400 hover:text-slate-600 text-lg">←</a>
+      <div><nav class="text-xs text-slate-400"><a href="visitors-list.html" class="hover:text-primary-600">Visitantes</a> / Registrar</nav><h1 class="font-display font-bold text-xl text-slate-900">Registrar Visitante</h1></div>
+    </div>
+    <div class="hidden sm:flex items-center gap-1 bg-slate-100 rounded-xl p-1"><button class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 bg-white shadow-sm">ES</button><button class="px-3 py-1.5 rounded-lg text-xs text-slate-500">EN</button></div>
+  </header>
+
+  <main class="p-6 max-w-3xl mx-auto w-full">
+    <form onsubmit="submit(event)">
+      <!-- Section 1: Visitor Info -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-6 mb-5">
+        <h2 class="font-semibold text-slate-800 mb-5 flex items-center gap-2"><span class="w-6 h-6 bg-primary-100 rounded-lg flex items-center justify-center text-primary-700 text-xs font-bold">1</span>Información del Visitante</h2>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div><label class="block text-sm font-medium text-slate-700 mb-1.5">Nombre *</label><input class="inp" placeholder="Juan" required/></div>
+          <div><label class="block text-sm font-medium text-slate-700 mb-1.5">Apellido *</label><input class="inp" placeholder="Pérez" required/></div>
+          <div><label class="block text-sm font-medium text-slate-700 mb-1.5">Tipo de ID</label><select class="inp bg-white"><option>Sin documento</option><option>CC</option><option>CE</option><option>Pasaporte</option></select></div>
+          <div><label class="block text-sm font-medium text-slate-700 mb-1.5">Número de ID</label><input class="inp" placeholder="55667788"/></div>
+        </div>
+
+        <!-- Visitor Type -->
+        <div class="mt-4">
+          <label class="block text-sm font-medium text-slate-700 mb-3">Tipo de visita *</label>
+          <div class="grid sm:grid-cols-2 gap-3">
+            <label class="flex items-center gap-3 p-4 rounded-xl border-2 border-primary-500 bg-primary-50 cursor-pointer">
+              <input type="radio" name="type" value="temporal" checked class="accent-primary-600 w-4 h-4"/>
+              <div><p class="font-semibold text-slate-800 text-sm">Temporal</p><p class="text-xs text-slate-500">Válido hasta una fecha específica</p></div>
+            </label>
+            <label class="flex items-center gap-3 p-4 rounded-xl border-2 border-slate-200 hover:border-primary-300 cursor-pointer">
+              <input type="radio" name="type" value="permanent" class="accent-primary-600 w-4 h-4" onchange="toggleExpiry(false)"/>
+              <div><p class="font-semibold text-slate-800 text-sm">Permanente</p><p class="text-xs text-slate-500">Sin fecha de vencimiento</p></div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Expiry -->
+        <div id="expiryField" class="mt-4">
+          <label class="block text-sm font-medium text-slate-700 mb-1.5">Fecha y hora de vencimiento *</label>
+          <input class="inp" type="datetime-local" required/>
+          <p class="text-xs text-slate-400 mt-1">Debe ser una fecha futura</p>
+        </div>
+      </div>
+
+      <!-- Section 2: Vehicle -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-6 mb-5">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="font-semibold text-slate-800 flex items-center gap-2"><span class="w-6 h-6 bg-slate-100 rounded-lg flex items-center justify-center text-slate-500 text-xs font-bold">2</span>Vehículo <span class="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded-lg ml-1">Opcional</span></h2>
+          <label class="flex items-center gap-2 cursor-pointer"><span class="text-sm text-slate-600">¿Tiene vehículo?</span><div class="relative"><input type="checkbox" id="vehicleToggle" onchange="toggleVehicle(this.checked)" class="sr-only peer"/><div class="w-11 h-6 bg-slate-200 rounded-full peer peer-checked:bg-primary-600 transition-colors"></div><div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow transition-all peer-checked:translate-x-5"></div></div></label>
+        </div>
+        <div id="vehicleFields" class="hidden grid sm:grid-cols-2 gap-4">
+          <div><label class="block text-sm font-medium text-slate-700 mb-1.5">Placa *</label><input class="inp uppercase" placeholder="ABC-123" id="plateInput" oninput="validatePlate(this)"/><p id="plateHint" class="text-xs text-slate-400 mt-1">Formato: ABC123 o ABC12D</p></div>
+          <div><label class="block text-sm font-medium text-slate-700 mb-1.5">Marca</label><input class="inp" placeholder="Toyota"/></div>
+          <div><label class="block text-sm font-medium text-slate-700 mb-1.5">Modelo</label><input class="inp" placeholder="Corolla"/></div>
+          <div><label class="block text-sm font-medium text-slate-700 mb-1.5">Color</label><input class="inp" placeholder="Azul"/></div>
+        </div>
+        <p id="noVehicleMsg" class="text-sm text-slate-400 text-center py-4">El visitante no tiene vehículo registrado.</p>
+      </div>
+
+      <!-- Footer -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 flex items-center justify-between">
+        <p class="text-xs text-slate-400">* Campos requeridos · Se generará código QR automáticamente</p>
+        <div class="flex gap-3">
+          <a href="visitors-list.html" class="px-5 py-2.5 rounded-xl border border-slate-200 text-sm font-medium text-slate-600 hover:bg-slate-50">Cancelar</a>
+          <button type="submit" class="px-6 py-2.5 rounded-xl bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold transition-all shadow-lg shadow-primary-600/20">Guardar y Ver QR</button>
+        </div>
+      </div>
+    </form>
+  </main>
+</div>
+
+<script>
+function toggleExpiry(show){document.getElementById('expiryField').style.display=show?'block':'none';}
+function toggleVehicle(on){
+  document.getElementById('vehicleFields').style.display=on?'grid':'none';
+  document.getElementById('noVehicleMsg').style.display=on?'none':'block';
+}
+function validatePlate(inp){
+  const v=inp.value.toUpperCase().replace('-','');
+  const ok=/^[A-Z]{3}[0-9]{2}[A-Z0-9]$/.test(v);
+  inp.style.borderColor=v.length>=6?(ok?'#10b981':'#ef4444'):'#e2e8f0';
+  document.getElementById('plateHint').textContent=v.length>=6?(ok?'✓ Placa válida':'✗ Formato inválido — Ej: ABC123'):'Formato: ABC123 o ABC12D';
+  document.getElementById('plateHint').className='text-xs mt-1 '+(ok?'text-emerald-600':'text-red-500');
+}
+function submit(e){e.preventDefault();window.location='visitor-qr.html';}
+document.querySelectorAll('input[name="type"]').forEach(r=>r.addEventListener('change',()=>toggleExpiry(r.value==='temporal')));
+</script>
+</body>
+</html>

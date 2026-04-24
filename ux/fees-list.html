@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Rexi — Cuotas de Administración</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800&display=swap" rel="stylesheet"/>
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],display:['Outfit','sans-serif']},colors:{primary:{50:'#f0fdfa',100:'#ccfbf1',500:'#14b8a6',600:'#0d9488',700:'#0f766e'}}}}}</script>
+<style>body{font-family:'Inter',sans-serif;}.font-display{font-family:'Outfit',sans-serif;}.sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;font-size:14px;color:#475569;cursor:pointer;transition:all .15s;}.sidebar-link:hover,.sidebar-link.active{background:#ccfbf1;color:#0d9488;font-weight:600;}tr:hover td{background:#f8fafc;}</style>
+</head>
+<body class="bg-slate-50 min-h-screen flex">
+
+<aside class="w-64 bg-white border-r border-slate-200 flex-col fixed h-full z-20 hidden lg:flex">
+  <div class="p-5 border-b border-slate-100 flex items-center gap-3"><div class="w-9 h-9 bg-primary-600 rounded-xl flex items-center justify-center"><span class="text-white font-display font-bold text-lg">R</span></div><span class="font-display font-bold text-slate-800 text-lg">Rexi</span></div>
+  <div class="px-4 py-3 border-b border-slate-100"><div class="bg-slate-50 rounded-xl px-3 py-2.5"><p class="text-xs text-slate-400">Conjunto</p><p class="text-sm font-semibold text-slate-800">Las Palmas</p></div></div>
+  <nav class="flex-1 p-3 space-y-0.5 text-sm">
+    <div class="sidebar-link" onclick="window.location='admin-dashboard.html'"><span>📊</span>Panel</div>
+    <div class="sidebar-link" onclick="window.location='owners-list.html'"><span>👥</span>Propietarios</div>
+    <div class="sidebar-link active"><span>💰</span>Cuotas</div>
+    <div class="sidebar-link"><span>💳</span>Pagos</div>
+    <div class="sidebar-link" onclick="window.location='visitors-list.html'"><span>🚶</span>Visitantes</div>
+    <div class="sidebar-link" onclick="window.location='fines-list.html'"><span>🚫</span>Multas</div>
+    <div class="sidebar-link" onclick="window.location='reports.html'"><span>📈</span>Informes</div>
+  </nav>
+  <div class="p-4 border-t border-slate-100 flex items-center gap-3"><div class="w-9 h-9 bg-primary-100 rounded-full flex items-center justify-center text-primary-700 font-bold text-sm">AN</div><div><p class="text-sm font-semibold text-slate-800">Ana Martínez</p><p class="text-xs text-slate-400">Administradora</p></div></div>
+</aside>
+
+<div class="flex-1 flex flex-col lg:ml-64">
+  <header class="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between sticky top-0 z-10 flex-wrap gap-3">
+    <div><h1 class="font-display font-bold text-xl text-slate-900">Cuotas de Administración</h1><p class="text-xs text-slate-400">Las Palmas · Abril 2026</p></div>
+    <div class="flex items-center gap-3 flex-wrap">
+      <div class="hidden sm:flex items-center gap-1 bg-slate-100 rounded-xl p-1"><button onclick="setLang('es')" class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 bg-white shadow-sm">ES</button><button onclick="setLang('en')" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">EN</button></div>
+      <button onclick="document.getElementById('generateModal').classList.remove('hidden')" class="flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-all">⚡ Generar Cuotas</button>
+    </div>
+  </header>
+
+  <main class="p-6">
+    <!-- Summary cards -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
+      <div class="bg-white rounded-2xl border border-slate-200 p-4"><p class="text-xs text-slate-500 mb-1">Total Esperado</p><p class="font-display font-bold text-2xl text-slate-900">$28.2M</p></div>
+      <div class="bg-white rounded-2xl border border-slate-200 p-4"><p class="text-xs text-slate-500 mb-1">Recaudado</p><p class="font-display font-bold text-2xl text-emerald-600">$23.5M</p></div>
+      <div class="bg-white rounded-2xl border border-slate-200 p-4"><p class="text-xs text-slate-500 mb-1">En Mora</p><p class="font-display font-bold text-2xl text-red-600">$4.7M</p></div>
+      <div class="bg-white rounded-2xl border border-slate-200 p-4"><p class="text-xs text-slate-500 mb-1">Tasa de Cobro</p><p class="font-display font-bold text-2xl text-primary-600">83.3%</p></div>
+    </div>
+
+    <!-- Filters -->
+    <div class="bg-white rounded-2xl border border-slate-200 p-4 mb-4 flex flex-wrap gap-3">
+      <select class="px-3 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white">
+        <option>Abril 2026</option><option>Marzo 2026</option><option>Febrero 2026</option>
+      </select>
+      <div class="flex gap-2 flex-wrap">
+        <button onclick="filterStatus('')" class="px-3 py-2 rounded-xl text-xs font-medium bg-slate-800 text-white">Todos (60)</button>
+        <button onclick="filterStatus('pagado')" class="px-3 py-2 rounded-xl text-xs font-medium bg-emerald-100 text-emerald-700">Pagados (50)</button>
+        <button onclick="filterStatus('mora')" class="px-3 py-2 rounded-xl text-xs font-medium bg-red-100 text-red-700">En mora (6)</button>
+        <button onclick="filterStatus('parcial')" class="px-3 py-2 rounded-xl text-xs font-medium bg-amber-100 text-amber-700">Parcial (4)</button>
+      </div>
+      <div class="relative ml-auto">
+        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">🔍</span>
+        <input type="text" placeholder="Buscar apartamento o propietario..." class="pl-9 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 w-64"/>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead><tr class="border-b border-slate-100 bg-slate-50">
+            <th class="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase">Apartamento</th>
+            <th class="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase">Propietario</th>
+            <th class="text-right px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase">Total</th>
+            <th class="text-right px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase">Pagado</th>
+            <th class="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase">Estado</th>
+            <th class="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase">Vencimiento</th>
+            <th class="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase">Acciones</th>
+          </tr></thead>
+          <tbody>
+            <tr class="border-b border-slate-50 transition-colors">
+              <td class="px-5 py-4 text-sm font-semibold text-slate-800">101-A · Torre A</td>
+              <td class="px-5 py-4 text-sm text-slate-600">Carlos García</td>
+              <td class="px-5 py-4 text-sm font-semibold text-right text-slate-800">$470,000</td>
+              <td class="px-5 py-4 text-sm text-right text-red-600 font-medium">$0</td>
+              <td class="px-5 py-4"><span class="bg-red-100 text-red-700 text-xs font-semibold px-2.5 py-1 rounded-lg">En mora</span><span class="text-red-500 text-xs ml-1.5 font-medium">12d</span></td>
+              <td class="px-5 py-4 text-sm text-slate-600">10 abr 2026</td>
+              <td class="px-5 py-4"><div class="flex gap-2"><a href="fee-detail.html" class="text-xs text-primary-600 font-medium bg-primary-50 px-3 py-1.5 rounded-lg">Ver</a><button class="text-xs text-white font-medium bg-primary-600 px-3 py-1.5 rounded-lg">Pagar</button></div></td>
+            </tr>
+            <tr class="border-b border-slate-50 transition-colors">
+              <td class="px-5 py-4 text-sm font-semibold text-slate-800">203-B · Torre B</td>
+              <td class="px-5 py-4 text-sm text-slate-600">María Rodríguez</td>
+              <td class="px-5 py-4 text-sm font-semibold text-right text-slate-800">$310,000</td>
+              <td class="px-5 py-4 text-sm text-right text-red-600 font-medium">$0</td>
+              <td class="px-5 py-4"><span class="bg-red-100 text-red-700 text-xs font-semibold px-2.5 py-1 rounded-lg">En mora</span><span class="text-red-500 text-xs ml-1.5 font-medium">8d</span></td>
+              <td class="px-5 py-4 text-sm text-slate-600">10 abr 2026</td>
+              <td class="px-5 py-4"><div class="flex gap-2"><a href="fee-detail.html" class="text-xs text-primary-600 font-medium bg-primary-50 px-3 py-1.5 rounded-lg">Ver</a><button class="text-xs text-white font-medium bg-primary-600 px-3 py-1.5 rounded-lg">Pagar</button></div></td>
+            </tr>
+            <tr class="border-b border-slate-50 transition-colors">
+              <td class="px-5 py-4 text-sm font-semibold text-slate-800">501-A · Torre A</td>
+              <td class="px-5 py-4 text-sm text-slate-600">Luisa Mora</td>
+              <td class="px-5 py-4 text-sm font-semibold text-right text-slate-800">$380,000</td>
+              <td class="px-5 py-4 text-sm text-right text-amber-600 font-medium">$200,000</td>
+              <td class="px-5 py-4"><span class="bg-amber-100 text-amber-700 text-xs font-semibold px-2.5 py-1 rounded-lg">Parcial</span></td>
+              <td class="px-5 py-4 text-sm text-slate-600">10 abr 2026</td>
+              <td class="px-5 py-4"><div class="flex gap-2"><a href="fee-detail.html" class="text-xs text-primary-600 font-medium bg-primary-50 px-3 py-1.5 rounded-lg">Ver</a><button class="text-xs text-white font-medium bg-primary-600 px-3 py-1.5 rounded-lg">Pagar</button></div></td>
+            </tr>
+            <tr class="border-b border-slate-50 transition-colors">
+              <td class="px-5 py-4 text-sm font-semibold text-slate-800">304-A · Torre A</td>
+              <td class="px-5 py-4 text-sm text-slate-600">Jorge Suárez</td>
+              <td class="px-5 py-4 text-sm font-semibold text-right text-slate-800">$520,000</td>
+              <td class="px-5 py-4 text-sm text-right text-emerald-600 font-medium">$520,000</td>
+              <td class="px-5 py-4"><span class="bg-emerald-100 text-emerald-700 text-xs font-semibold px-2.5 py-1 rounded-lg">Pagado</span></td>
+              <td class="px-5 py-4 text-sm text-slate-600">10 abr 2026</td>
+              <td class="px-5 py-4"><a href="fee-detail.html" class="text-xs text-primary-600 font-medium bg-primary-50 px-3 py-1.5 rounded-lg">Ver</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="px-5 py-4 border-t border-slate-100 flex items-center justify-between">
+        <p class="text-sm text-slate-500">Mostrando 4 de 60 cuotas</p>
+        <div class="flex items-center gap-2">
+          <button class="w-9 h-9 rounded-xl border border-slate-200 flex items-center justify-center text-slate-400 disabled:opacity-40" disabled>←</button>
+          <button class="w-9 h-9 rounded-xl bg-primary-600 text-white font-semibold text-sm">1</button>
+          <button class="w-9 h-9 rounded-xl border border-slate-200 text-slate-600 text-sm">2</button>
+          <button class="w-9 h-9 rounded-xl border border-slate-200 text-slate-600 text-sm">3</button>
+          <button class="w-9 h-9 rounded-xl border border-slate-200 flex items-center justify-center text-slate-500">→</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Generate Fees Modal -->
+<div id="generateModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8">
+    <h2 class="font-display font-bold text-xl text-slate-900 mb-2">Generar Cuotas</h2>
+    <p class="text-slate-500 text-sm mb-6">Se generarán cuotas para todos los apartamentos activos del conjunto.</p>
+    <div class="grid grid-cols-2 gap-4 mb-6">
+      <div><label class="block text-sm font-medium text-slate-700 mb-2">Mes</label>
+        <select class="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white">
+          <option>Mayo 2026</option><option>Junio 2026</option>
+        </select></div>
+      <div><label class="block text-sm font-medium text-slate-700 mb-2">Año</label>
+        <input type="number" value="2026" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"/></div>
+    </div>
+    <div class="bg-primary-50 border border-primary-200 rounded-xl p-4 mb-6 text-sm text-primary-800">
+      <p class="font-semibold mb-1">📋 Vista previa</p>
+      <p>Se generarán cuotas para <strong>60 apartamentos activos</strong>.</p>
+      <p class="mt-1">Presupuesto mensual: <strong>$28,200,000</strong></p>
+    </div>
+    <div class="flex gap-3">
+      <button onclick="document.getElementById('generateModal').classList.add('hidden')" class="flex-1 py-3 rounded-xl border border-slate-200 text-slate-600 text-sm font-medium hover:bg-slate-50 transition-all">Cancelar</button>
+      <button onclick="document.getElementById('generateModal').classList.add('hidden')" class="flex-1 py-3 rounded-xl bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold transition-all">Confirmar y Generar</button>
+    </div>
+  </div>
+</div>
+<script>function filterStatus(s){} function setLang(l){}</script>
+</body>
+</html>
