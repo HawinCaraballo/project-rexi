@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Rexi — Configuración del Conjunto</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800&display=swap" rel="stylesheet"/>
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],display:['Outfit','sans-serif']},colors:{primary:{50:'#f0fdfa',100:'#ccfbf1',600:'#0d9488',700:'#0f766e'}}}}}</script>
+<style>body{font-family:'Inter',sans-serif;}.font-display{font-family:'Outfit',sans-serif;}.sl{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;font-size:14px;color:#475569;cursor:pointer;}.sl:hover,.sl.act{background:#ccfbf1;color:#0d9488;font-weight:600;}</style>
+</head>
+<body class="bg-slate-50 min-h-screen flex">
+<aside class="w-64 bg-white border-r border-slate-200 flex-col fixed h-full hidden lg:flex">
+  <div class="p-5 border-b border-slate-100 flex items-center gap-3"><div class="w-9 h-9 bg-primary-600 rounded-xl flex items-center justify-center"><span class="text-white font-display font-bold text-lg">R</span></div><span class="font-display font-bold text-slate-800">Rexi</span></div>
+  <nav class="flex-1 p-3 space-y-0.5 text-sm overflow-y-auto">
+    <div class="sl" onclick="window.location='admin-dashboard.html'"><span>📊</span>Panel</div>
+    <div class="sl" onclick="window.location='owners-list.html'"><span>👥</span>Propietarios</div>
+    <div class="sl" onclick="window.location='fees-list.html'"><span>💰</span>Cuotas</div>
+    <div class="sl" onclick="window.location='fines-list.html'"><span>🚫</span>Multas</div>
+    <div class="sl" onclick="window.location='reports.html'"><span>📈</span>Informes</div>
+    <div class="sl act"><span>⚙️</span>Configuración</div>
+  </nav>
+</aside>
+
+<div class="flex-1 flex flex-col lg:ml-64">
+  <header class="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between sticky top-0 z-10">
+    <div><h1 class="font-display font-bold text-xl text-slate-900">Configuración</h1><p class="text-xs text-slate-400">Las Palmas · Ajustes del sistema y financieros</p></div>
+    <button class="bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-all">Guardar Cambios</button>
+  </header>
+
+  <main class="p-6 max-w-4xl">
+    <div class="space-y-6">
+      <!-- General Info -->
+      <section class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+        <div class="p-5 border-b border-slate-100 bg-slate-50/50"><h2 class="font-bold text-slate-800">Información del Conjunto</h2></div>
+        <div class="p-6 grid sm:grid-cols-2 gap-6">
+          <div><label class="block text-sm font-medium text-slate-700 mb-1.5">Nombre del Conjunto</label><input type="text" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-primary-600 focus:outline-none" value="Las Palmas de Castilla"/></div>
+          <div><label class="block text-sm font-medium text-slate-700 mb-1.5">NIT</label><input type="text" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-primary-600 focus:outline-none" value="900.123.456-7"/></div>
+          <div class="sm:col-span-2"><label class="block text-sm font-medium text-slate-700 mb-1.5">Dirección</label><input type="text" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-primary-600 focus:outline-none" value="Calle 123 # 45 - 67, Bogotá"/></div>
+        </div>
+      </section>
+
+      <!-- Financial Config -->
+      <section class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+        <div class="p-5 border-b border-slate-100 bg-slate-50/50"><h2 class="font-bold text-slate-800">Configuración Financiera</h2></div>
+        <div class="p-6 space-y-8">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-3">Método de Cálculo de Cuota</label>
+            <div class="grid sm:grid-cols-2 gap-4">
+              <label class="relative flex p-4 border rounded-2xl cursor-pointer hover:bg-slate-50 transition-colors" id="label-coeff">
+                <input type="radio" name="calc-method" value="coeff" class="mt-1 h-4 w-4 text-primary-600 border-slate-300 focus:ring-primary-600" checked onchange="toggleCalc(this.value)">
+                <div class="ml-3"><span class="block text-sm font-bold text-slate-800">Por Coeficiente</span><span class="block text-xs text-slate-500">Usa el coeficiente de propiedad horizontal (área).</span></div>
+              </label>
+              <label class="relative flex p-4 border rounded-2xl cursor-pointer hover:bg-slate-50 transition-colors" id="label-fixed">
+                <input type="radio" name="calc-method" value="fixed" class="mt-1 h-4 w-4 text-primary-600 border-slate-300 focus:ring-primary-600" onchange="toggleCalc(this.value)">
+                <div class="ml-3"><span class="block text-sm font-bold text-slate-800">Cuota Fija</span><span class="block text-xs text-slate-500">Mismo valor para todos los apartamentos.</span></div>
+              </label>
+            </div>
+          </div>
+
+          <div class="grid sm:grid-cols-2 gap-6 pt-4 border-t border-slate-100">
+            <div id="div-budget">
+              <label class="block text-sm font-medium text-slate-700 mb-1.5">Presupuesto Anual Gastos</label>
+              <div class="relative"><span class="absolute left-4 top-2.5 text-slate-400 text-sm">$</span><input type="text" class="w-full pl-8 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-primary-600 focus:outline-none" value="120,000,000"/></div>
+            </div>
+            <div id="div-fixed-val" class="hidden">
+              <label class="block text-sm font-medium text-slate-700 mb-1.5">Valor Cuota Mensual Fija</label>
+              <div class="relative"><span class="absolute left-4 top-2.5 text-slate-400 text-sm">$</span><input type="text" class="w-full pl-8 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-primary-600 focus:outline-none" placeholder="0.00"/></div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1.5">Día Límite de Pago</label>
+              <input type="number" min="1" max="28" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-primary-600 focus:outline-none" value="10"/>
+              <p class="text-[10px] text-slate-400 mt-1">Día del mes después del cual se aplica interés de mora.</p>
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-slate-100">
+            <h3 class="text-sm font-bold text-slate-800 mb-4">Interés de Mora</h3>
+            <div class="grid sm:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1.5">Tipo de Interés</label>
+                <select class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-primary-600 focus:outline-none">
+                  <option value="percent">Porcentaje (%)</option>
+                  <option value="fixed">Valor Fijo ($)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1.5">Valor del Interés (diario)</label>
+                <input type="text" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-primary-600 focus:outline-none" value="0.05"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Advanced -->
+      <section class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+        <div class="p-5 border-b border-slate-100 bg-slate-50/50"><h2 class="font-bold text-slate-800">Opciones Avanzadas</h2></div>
+        <div class="p-6 space-y-4">
+          <div class="flex items-center justify-between p-4 bg-slate-50 rounded-2xl">
+            <div><p class="text-sm font-bold text-slate-800">Reconocimiento Facial</p><p class="text-xs text-slate-500">Permite a los residentes entrar usando biometría.</p></div>
+            <label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" class="sr-only peer" checked><div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-600"></div></label>
+          </div>
+          <div class="flex items-center justify-between p-4 bg-slate-50 rounded-2xl">
+            <div><p class="text-sm font-bold text-slate-800">Chatbot por WhatsApp</p><p class="text-xs text-slate-500">Habilitar canal de atención automático por WhatsApp.</p></div>
+            <label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" class="sr-only peer"><div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-600"></div></label>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+<script>
+function toggleCalc(val) {
+  document.getElementById('div-budget').classList.toggle('hidden', val === 'fixed');
+  document.getElementById('div-fixed-val').classList.toggle('hidden', val === 'coeff');
+}
+</script>
+</body>
+</html>

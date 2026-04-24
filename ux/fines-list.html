@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Rexi — Multas</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800&display=swap" rel="stylesheet"/>
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],display:['Outfit','sans-serif']},colors:{primary:{50:'#f0fdfa',100:'#ccfbf1',600:'#0d9488',700:'#0f766e'}}}}}</script>
+<style>body{font-family:'Inter',sans-serif;}.font-display{font-family:'Outfit',sans-serif;}.sl{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;font-size:14px;color:#475569;cursor:pointer;}.sl:hover,.sl.act{background:#ccfbf1;color:#0d9488;font-weight:600;}tr:hover td{background:#f8fafc;}.inp{width:100%;padding:10px 14px;border-radius:12px;border:1px solid #e2e8f0;font-size:14px;outline:none;}</style>
+</head>
+<body class="bg-slate-50 min-h-screen flex">
+<aside class="w-64 bg-white border-r border-slate-200 flex-col fixed h-full hidden lg:flex">
+  <div class="p-5 border-b border-slate-100 flex items-center gap-3"><div class="w-9 h-9 bg-primary-600 rounded-xl flex items-center justify-center"><span class="text-white font-display font-bold text-lg">R</span></div><span class="font-display font-bold text-slate-800">Rexi</span></div>
+  <nav class="flex-1 p-3 space-y-0.5 text-sm overflow-y-auto">
+    <div class="sl" onclick="window.location='admin-dashboard.html'"><span>📊</span>Panel</div>
+    <div class="sl" onclick="window.location='owners-list.html'"><span>👥</span>Propietarios</div>
+    <div class="sl" onclick="window.location='fees-list.html'"><span>💰</span>Cuotas</div>
+    <div class="sl" onclick="window.location='visitors-list.html'"><span>🚶</span>Visitantes</div>
+    <div class="sl act"><span>🚫</span>Multas</div>
+    <div class="sl" onclick="window.location='reports.html'"><span>📈</span>Informes</div>
+  </nav>
+  <div class="p-4 border-t border-slate-100 flex items-center gap-3"><div class="w-9 h-9 bg-primary-100 rounded-full flex items-center justify-center text-primary-700 font-bold text-sm">AN</div><div><p class="text-sm font-semibold text-slate-800">Ana Martínez</p><p class="text-xs text-slate-400">Administradora</p></div></div>
+</aside>
+
+<div class="flex-1 flex flex-col lg:ml-64">
+  <header class="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between sticky top-0 z-10">
+    <div><h1 class="font-display font-bold text-xl text-slate-900">Multas</h1><p class="text-xs text-slate-400">Las Palmas · 8 multas pendientes de aprobación</p></div>
+    <div class="flex gap-3 items-center">
+      <div class="hidden sm:flex items-center gap-1 bg-slate-100 rounded-xl p-1"><button class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 bg-white shadow-sm">ES</button><button class="px-3 py-1.5 rounded-lg text-xs text-slate-500">EN</button></div>
+    </div>
+  </header>
+
+  <main class="p-6">
+    <!-- Summary -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
+      <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4"><p class="text-xs text-amber-600 font-medium mb-1">Pendientes</p><p class="font-display font-bold text-2xl text-amber-700">8</p></div>
+      <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4"><p class="text-xs text-emerald-600 font-medium mb-1">Aprobadas</p><p class="font-display font-bold text-2xl text-emerald-700">15</p></div>
+      <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4"><p class="text-xs text-slate-500 font-medium mb-1">Rechazadas</p><p class="font-display font-bold text-2xl text-slate-700">3</p></div>
+      <div class="bg-blue-50 border border-blue-200 rounded-2xl p-4"><p class="text-xs text-blue-600 font-medium mb-1">En apelación</p><p class="font-display font-bold text-2xl text-blue-700">2</p></div>
+    </div>
+
+    <!-- Filters -->
+    <div class="bg-white rounded-2xl border border-slate-200 p-4 mb-4 flex flex-wrap gap-3">
+      <div class="relative flex-1 min-w-48"><span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">🔍</span><input class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-600" placeholder="Buscar apartamento o infracción..."/></div>
+      <div class="flex gap-2 flex-wrap">
+        <button class="px-3 py-2 rounded-xl text-xs font-medium bg-slate-800 text-white">Todos</button>
+        <button class="px-3 py-2 rounded-xl text-xs font-medium bg-amber-100 text-amber-700">Pendientes</button>
+        <button class="px-3 py-2 rounded-xl text-xs font-medium bg-emerald-100 text-emerald-700">Aprobadas</button>
+        <button class="px-3 py-2 rounded-xl text-xs font-medium bg-blue-100 text-blue-700">Apelación</button>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead><tr class="border-b border-slate-100 bg-slate-50">
+            <th class="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase">Apartamento</th>
+            <th class="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase">Infracción</th>
+            <th class="text-right px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase">Monto</th>
+            <th class="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase">Vigilante</th>
+            <th class="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase">Fecha</th>
+            <th class="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase">Estado</th>
+            <th class="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase">Acciones</th>
+          </tr></thead>
+          <tbody>
+            <tr class="border-b border-slate-50 transition-colors">
+              <td class="px-5 py-4 text-sm font-semibold text-slate-800">405-A</td>
+              <td class="px-5 py-4"><p class="text-sm font-medium text-slate-800">Ruido excesivo</p><p class="text-xs text-slate-400">Art. 4.3 del Reglamento</p></td>
+              <td class="px-5 py-4 text-sm font-semibold text-right text-slate-800">$100,000</td>
+              <td class="px-5 py-4 text-sm text-slate-600">Pedro Gómez</td>
+              <td class="px-5 py-4 text-sm text-slate-600">22 abr 2026</td>
+              <td class="px-5 py-4"><span class="bg-amber-100 text-amber-700 text-xs font-semibold px-2.5 py-1 rounded-lg">Pendiente</span></td>
+              <td class="px-5 py-4"><div class="flex gap-2">
+                <button onclick="document.getElementById('fineModal').classList.remove('hidden')" class="text-xs bg-primary-50 text-primary-600 font-medium px-3 py-1.5 rounded-lg">Ver</button>
+                <button onclick="approve(this)" class="text-xs bg-emerald-100 text-emerald-700 font-medium px-3 py-1.5 rounded-lg">✓ Aprobar</button>
+                <button class="text-xs bg-red-100 text-red-600 font-medium px-3 py-1.5 rounded-lg">✗ Rechazar</button>
+              </div></td>
+            </tr>
+            <tr class="border-b border-slate-50 transition-colors">
+              <td class="px-5 py-4 text-sm font-semibold text-slate-800">210-B</td>
+              <td class="px-5 py-4"><p class="text-sm font-medium text-slate-800">Mascotas sin correa</p><p class="text-xs text-slate-400">Art. 5.1 del Reglamento</p></td>
+              <td class="px-5 py-4 text-sm font-semibold text-right text-slate-800">$50,000</td>
+              <td class="px-5 py-4 text-sm text-slate-600">Pedro Gómez</td>
+              <td class="px-5 py-4 text-sm text-slate-600">21 abr 2026</td>
+              <td class="px-5 py-4"><span class="bg-amber-100 text-amber-700 text-xs font-semibold px-2.5 py-1 rounded-lg">Pendiente</span></td>
+              <td class="px-5 py-4"><div class="flex gap-2">
+                <button class="text-xs bg-primary-50 text-primary-600 font-medium px-3 py-1.5 rounded-lg">Ver</button>
+                <button class="text-xs bg-emerald-100 text-emerald-700 font-medium px-3 py-1.5 rounded-lg">✓ Aprobar</button>
+                <button class="text-xs bg-red-100 text-red-600 font-medium px-3 py-1.5 rounded-lg">✗ Rechazar</button>
+              </div></td>
+            </tr>
+            <tr class="border-b border-slate-50 transition-colors">
+              <td class="px-5 py-4 text-sm font-semibold text-slate-800">101-A</td>
+              <td class="px-5 py-4"><p class="text-sm font-medium text-slate-800">Parqueo en zona peatonal</p><p class="text-xs text-slate-400">Art. 6.2</p></td>
+              <td class="px-5 py-4 text-sm font-semibold text-right text-slate-800">$80,000</td>
+              <td class="px-5 py-4 text-sm text-slate-600">Luis Torres</td>
+              <td class="px-5 py-4 text-sm text-slate-600">18 abr 2026</td>
+              <td class="px-5 py-4"><span class="bg-blue-100 text-blue-700 text-xs font-semibold px-2.5 py-1 rounded-lg">En apelación</span></td>
+              <td class="px-5 py-4"><div class="flex gap-2">
+                <button class="text-xs bg-primary-50 text-primary-600 font-medium px-3 py-1.5 rounded-lg">Ver</button>
+                <button class="text-xs bg-emerald-100 text-emerald-700 font-medium px-3 py-1.5 rounded-lg">✓ Apelación</button>
+                <button class="text-xs bg-red-100 text-red-600 font-medium px-3 py-1.5 rounded-lg">✗ Rechazar</button>
+              </div></td>
+            </tr>
+            <tr class="border-b border-slate-50 transition-colors">
+              <td class="px-5 py-4 text-sm font-semibold text-slate-800">304-A</td>
+              <td class="px-5 py-4"><p class="text-sm font-medium text-slate-800">Basura fuera de horario</p></td>
+              <td class="px-5 py-4 text-sm font-semibold text-right text-slate-800">$30,000</td>
+              <td class="px-5 py-4 text-sm text-slate-600">Pedro Gómez</td>
+              <td class="px-5 py-4 text-sm text-slate-600">15 abr 2026</td>
+              <td class="px-5 py-4"><span class="bg-emerald-100 text-emerald-700 text-xs font-semibold px-2.5 py-1 rounded-lg">Aprobada</span></td>
+              <td class="px-5 py-4"><button class="text-xs bg-primary-50 text-primary-600 font-medium px-3 py-1.5 rounded-lg">Ver</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Fine Detail Modal -->
+<div id="fineModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg p-8">
+    <div class="flex justify-between mb-6"><h2 class="font-display font-bold text-xl text-slate-900">Detalle de Multa</h2><button onclick="document.getElementById('fineModal').classList.add('hidden')" class="text-slate-400 text-xl">✕</button></div>
+    <div class="space-y-4">
+      <div class="grid grid-cols-2 gap-4 text-sm">
+        <div><p class="text-slate-400 text-xs mb-0.5">Apartamento</p><p class="font-semibold text-slate-800">405-A · Torre A</p></div>
+        <div><p class="text-slate-400 text-xs mb-0.5">Propietario</p><p class="font-semibold text-slate-800">Andrés Mejía</p></div>
+        <div><p class="text-slate-400 text-xs mb-0.5">Infracción</p><p class="font-semibold text-slate-800">Ruido excesivo</p></div>
+        <div><p class="text-slate-400 text-xs mb-0.5">Monto</p><p class="font-semibold text-slate-800">$100,000</p></div>
+      </div>
+      <div><p class="text-slate-400 text-xs mb-1">Descripción</p><p class="text-sm text-slate-700 bg-slate-50 rounded-xl p-3">Música a alto volumen desde las 11pm hasta la 1am, causando perturbación a los vecinos del piso 4.</p></div>
+      <div><p class="text-slate-400 text-xs mb-2">Evidencias</p><div class="flex gap-2"><div class="w-24 h-24 bg-slate-100 rounded-xl flex items-center justify-center text-2xl border border-slate-200">📷</div><div class="w-24 h-24 bg-slate-100 rounded-xl flex items-center justify-center text-2xl border border-slate-200">📷</div></div></div>
+    </div>
+    <div class="flex gap-3 mt-6">
+      <button onclick="document.getElementById('fineModal').classList.add('hidden')" class="flex-1 py-3 rounded-xl border border-slate-200 text-slate-600 text-sm font-medium">Cerrar</button>
+      <button onclick="document.getElementById('fineModal').classList.add('hidden')" class="flex-1 py-3 rounded-xl bg-emerald-600 text-white text-sm font-semibold">✓ Aprobar Multa</button>
+      <button onclick="document.getElementById('fineModal').classList.add('hidden')" class="flex-1 py-3 rounded-xl bg-red-100 text-red-600 text-sm font-semibold">✗ Rechazar</button>
+    </div>
+  </div>
+</div>
+<script>function approve(btn){btn.textContent='✓ Aprobada';btn.className='text-xs bg-emerald-600 text-white font-medium px-3 py-1.5 rounded-lg';}</script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Rexi — Informes</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800&display=swap" rel="stylesheet"/>
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],display:['Outfit','sans-serif']},colors:{primary:{50:'#f0fdfa',100:'#ccfbf1',600:'#0d9488',700:'#0f766e'}}}}}</script>
+<style>body{font-family:'Inter',sans-serif;}.font-display{font-family:'Outfit',sans-serif;}.sl{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;font-size:14px;color:#475569;cursor:pointer;}.sl:hover,.sl.act{background:#ccfbf1;color:#0d9488;font-weight:600;}.report-card{transition:all .2s;cursor:pointer;}.report-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.08);}</style>
+</head>
+<body class="bg-slate-50 min-h-screen flex">
+<aside class="w-64 bg-white border-r border-slate-200 flex-col fixed h-full hidden lg:flex">
+  <div class="p-5 border-b border-slate-100 flex items-center gap-3"><div class="w-9 h-9 bg-primary-600 rounded-xl flex items-center justify-center"><span class="text-white font-display font-bold text-lg">R</span></div><span class="font-display font-bold text-slate-800">Rexi</span></div>
+  <nav class="flex-1 p-3 space-y-0.5 text-sm overflow-y-auto">
+    <div class="sl" onclick="window.location='admin-dashboard.html'"><span>📊</span>Panel</div>
+    <div class="sl" onclick="window.location='owners-list.html'"><span>👥</span>Propietarios</div>
+    <div class="sl" onclick="window.location='fees-list.html'"><span>💰</span>Cuotas</div>
+    <div class="sl" onclick="window.location='fines-list.html'"><span>🚫</span>Multas</div>
+    <div class="sl act"><span>📈</span>Informes</div>
+    <div class="sl" onclick="window.location='settings.html'"><span>⚙️</span>Configuración</div>
+  </nav>
+  <div class="p-4 border-t border-slate-100 flex items-center gap-3"><div class="w-9 h-9 bg-primary-100 rounded-full flex items-center justify-center text-primary-700 font-bold text-sm">AN</div><div><p class="text-sm font-semibold text-slate-800">Ana Martínez</p><p class="text-xs text-slate-400">Administradora</p></div></div>
+</aside>
+
+<div class="flex-1 flex flex-col lg:ml-64">
+  <header class="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between sticky top-0 z-10">
+    <div><h1 class="font-display font-bold text-xl text-slate-900">Informes</h1><p class="text-xs text-slate-400">Las Palmas · Genera y descarga reportes</p></div>
+    <div class="hidden sm:flex items-center gap-1 bg-slate-100 rounded-xl p-1"><button class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 bg-white shadow-sm">ES</button><button class="px-3 py-1.5 rounded-lg text-xs text-slate-500">EN</button></div>
+  </header>
+
+  <main class="p-6">
+    <!-- Period selector -->
+    <div class="bg-white rounded-2xl border border-slate-200 p-5 mb-6 flex flex-wrap gap-4 items-end">
+      <div><label class="block text-sm font-medium text-slate-700 mb-1.5">Periodo</label>
+        <select class="px-4 py-2.5 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary-600">
+          <option>Mes actual (Abril 2026)</option><option>Mes anterior (Marzo 2026)</option><option>Últimos 3 meses</option><option>Últimos 6 meses</option><option>Año 2026</option><option>Rango personalizado</option>
+        </select></div>
+      <div><label class="block text-sm font-medium text-slate-700 mb-1.5">Desde</label><input type="date" class="px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-600" value="2026-04-01"/></div>
+      <div><label class="block text-sm font-medium text-slate-700 mb-1.5">Hasta</label><input type="date" class="px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-600" value="2026-04-30"/></div>
+      <button class="bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-all">🔄 Actualizar</button>
+    </div>
+
+    <!-- Report types -->
+    <h2 class="font-semibold text-slate-700 mb-4 text-sm uppercase tracking-wide">Informes Financieros</h2>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+      <div class="report-card bg-white rounded-2xl border border-slate-200 p-5" onclick="download('Estado de Cuenta')">
+        <div class="flex items-start justify-between mb-4"><div class="w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center text-2xl">💰</div><button class="text-xs text-primary-600 font-medium bg-primary-50 px-3 py-1.5 rounded-lg hover:bg-primary-100">Descargar PDF</button></div>
+        <h3 class="font-semibold text-slate-800 mb-1">Estado de Cuenta</h3>
+        <p class="text-xs text-slate-500 mb-4">Cuotas, pagos y saldos por apartamento</p>
+        <div class="flex gap-4 text-center">
+          <div class="flex-1 bg-slate-50 rounded-xl p-2"><p class="font-bold text-slate-900 text-lg">$23.5M</p><p class="text-xs text-slate-400">Recaudado</p></div>
+          <div class="flex-1 bg-slate-50 rounded-xl p-2"><p class="font-bold text-red-600 text-lg">$4.7M</p><p class="text-xs text-slate-400">En mora</p></div>
+        </div>
+      </div>
+
+      <div class="report-card bg-white rounded-2xl border border-slate-200 p-5" onclick="download('Cartera Morosa')">
+        <div class="flex items-start justify-between mb-4"><div class="w-12 h-12 bg-red-100 rounded-2xl flex items-center justify-center text-2xl">📋</div><button class="text-xs text-primary-600 font-medium bg-primary-50 px-3 py-1.5 rounded-lg hover:bg-primary-100">Descargar PDF</button></div>
+        <h3 class="font-semibold text-slate-800 mb-1">Cartera Morosa</h3>
+        <p class="text-xs text-slate-500 mb-4">Lista de deudores con días y monto en mora</p>
+        <div class="flex gap-4 text-center">
+          <div class="flex-1 bg-slate-50 rounded-xl p-2"><p class="font-bold text-slate-900 text-lg">10</p><p class="text-xs text-slate-400">Aptos en mora</p></div>
+          <div class="flex-1 bg-slate-50 rounded-xl p-2"><p class="font-bold text-red-600 text-lg">12.5d</p><p class="text-xs text-slate-400">Mora promedio</p></div>
+        </div>
+      </div>
+
+      <div class="report-card bg-white rounded-2xl border border-slate-200 p-5" onclick="download('Presupuesto vs Ejecución')">
+        <div class="flex items-start justify-between mb-4"><div class="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center text-2xl">📊</div><button class="text-xs text-primary-600 font-medium bg-primary-50 px-3 py-1.5 rounded-lg hover:bg-primary-100">Descargar PDF</button></div>
+        <h3 class="font-semibold text-slate-800 mb-1">Presupuesto vs Ejecución</h3>
+        <p class="text-xs text-slate-500 mb-4">Comparativa de ingresos esperados vs reales</p>
+        <div class="flex gap-4 text-center">
+          <div class="flex-1 bg-slate-50 rounded-xl p-2"><p class="font-bold text-slate-900 text-lg">83.3%</p><p class="text-xs text-slate-400">Tasa cobro</p></div>
+          <div class="flex-1 bg-slate-50 rounded-xl p-2"><p class="font-bold text-emerald-600 text-lg">↑3%</p><p class="text-xs text-slate-400">vs mes ant.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="font-semibold text-slate-700 mb-4 text-sm uppercase tracking-wide">Informes Operativos</h2>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="report-card bg-white rounded-2xl border border-slate-200 p-5" onclick="download('Control de Acceso')">
+        <div class="flex items-start justify-between mb-4"><div class="w-12 h-12 bg-slate-100 rounded-2xl flex items-center justify-center text-2xl">🔐</div><button class="text-xs text-primary-600 font-medium bg-primary-50 px-3 py-1.5 rounded-lg">Descargar PDF</button></div>
+        <h3 class="font-semibold text-slate-800 mb-1">Control de Acceso</h3>
+        <p class="text-xs text-slate-500 mb-4">Registro de entradas y salidas del mes</p>
+        <div class="text-center bg-slate-50 rounded-xl p-2"><p class="font-bold text-slate-900 text-lg">1,248</p><p class="text-xs text-slate-400">Registros de acceso</p></div>
+      </div>
+
+      <div class="report-card bg-white rounded-2xl border border-slate-200 p-5" onclick="download('Multas')">
+        <div class="flex items-start justify-between mb-4"><div class="w-12 h-12 bg-amber-100 rounded-2xl flex items-center justify-center text-2xl">🚫</div><button class="text-xs text-primary-600 font-medium bg-primary-50 px-3 py-1.5 rounded-lg">Descargar PDF</button></div>
+        <h3 class="font-semibold text-slate-800 mb-1">Informe de Multas</h3>
+        <p class="text-xs text-slate-500 mb-4">Multas emitidas, aprobadas y recaudadas</p>
+        <div class="flex gap-4 text-center">
+          <div class="flex-1 bg-slate-50 rounded-xl p-2"><p class="font-bold text-slate-900 text-lg">26</p><p class="text-xs text-slate-400">Multas totales</p></div>
+          <div class="flex-1 bg-slate-50 rounded-xl p-2"><p class="font-bold text-amber-600 text-lg">$1.2M</p><p class="text-xs text-slate-400">Recaudado</p></div>
+        </div>
+      </div>
+
+      <div class="report-card bg-white rounded-2xl border border-slate-200 p-5" onclick="download('Zonas Comunes')">
+        <div class="flex items-start justify-between mb-4"><div class="w-12 h-12 bg-purple-100 rounded-2xl flex items-center justify-center text-2xl">🏊</div><button class="text-xs text-primary-600 font-medium bg-primary-50 px-3 py-1.5 rounded-lg">Descargar PDF</button></div>
+        <h3 class="font-semibold text-slate-800 mb-1">Uso Zonas Comunes</h3>
+        <p class="text-xs text-slate-500 mb-4">Ocupación y reservas de áreas comunes</p>
+        <div class="flex gap-4 text-center">
+          <div class="flex-1 bg-slate-50 rounded-xl p-2"><p class="font-bold text-slate-900 text-lg">84</p><p class="text-xs text-slate-400">Reservas</p></div>
+          <div class="flex-1 bg-slate-50 rounded-xl p-2"><p class="font-bold text-purple-600 text-lg">78%</p><p class="text-xs text-slate-400">Ocupación</p></div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+<script>function download(name){alert('📥 Descargando: Informe de '+name+'\n\nEl PDF se generará y descargará en unos segundos.');}</script>
+</body>
+</html>

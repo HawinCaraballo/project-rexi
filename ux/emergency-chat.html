@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Rexi — Emergencias</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800&display=swap" rel="stylesheet"/>
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],display:['Outfit','sans-serif']},colors:{primary:{600:'#0d9488'}}}}}</script>
+<style>body{font-family:'Inter',sans-serif;}.font-display{font-family:'Outfit',sans-serif;}.typing span{display:inline-block;width:7px;height:7px;background:#ef4444;border-radius:50%;animation:b 1.2s infinite;margin:0 2px;}.typing span:nth-child(2){animation-delay:.2s;}.typing span:nth-child(3){animation-delay:.4s;}@keyframes b{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px);}}</style>
+</head>
+<body class="bg-red-950 min-h-screen flex flex-col text-white">
+
+  <!-- Emergency header -->
+  <header class="bg-red-900 border-b border-red-800 px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center text-xl animate-pulse">🚨</div>
+      <div><p class="font-display font-bold text-xl" id="headerTitle">Centro de Emergencias</p><p class="text-red-300 text-xs" id="headerSub">Rexi · Las Palmas · Asistencia inmediata</p></div>
+    </div>
+    <div class="flex items-center gap-3">
+      <div class="flex items-center gap-1 bg-red-800 rounded-xl p-1">
+        <button onclick="setLang('es')" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-red-700">ES</button>
+        <button onclick="setLang('en')" class="px-3 py-1.5 rounded-lg text-xs text-red-300">EN</button>
+      </div>
+      <a href="admin-dashboard.html" class="text-red-300 hover:text-white text-sm">← Salir</a>
+    </div>
+  </header>
+
+  <!-- Type selection -->
+  <div id="typeSelect" class="p-6 max-w-3xl mx-auto w-full">
+    <h1 class="font-display font-bold text-3xl text-center mb-2" id="selectTitle">¿Qué tipo de emergencia?</h1>
+    <p class="text-red-300 text-center text-sm mb-8" id="selectSub">El asistente te guiará para generar un reporte y obtener el número de emergencia correspondiente.</p>
+    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+      <button onclick="startChat('fire')" class="bg-red-800 hover:bg-red-700 border-2 border-red-600 hover:border-red-400 rounded-3xl p-6 text-center transition-all hover:scale-105 active:scale-95">
+        <span class="text-5xl block mb-3">🔥</span><p class="font-display font-bold text-lg" id="t-fire">Incendio</p><p class="text-xs text-red-300 mt-1">Bomberos · 119</p>
+      </button>
+      <button onclick="startChat('police')" class="bg-red-800 hover:bg-red-700 border-2 border-red-600 hover:border-red-400 rounded-3xl p-6 text-center transition-all hover:scale-105 active:scale-95">
+        <span class="text-5xl block mb-3">👮</span><p class="font-display font-bold text-lg" id="t-police">Policía</p><p class="text-xs text-red-300 mt-1">Policía · 123</p>
+      </button>
+      <button onclick="startChat('ambulance')" class="bg-red-800 hover:bg-red-700 border-2 border-red-600 hover:border-red-400 rounded-3xl p-6 text-center transition-all hover:scale-105 active:scale-95">
+        <span class="text-5xl block mb-3">🚑</span><p class="font-display font-bold text-lg" id="t-ambulance">Ambulancia</p><p class="text-xs text-red-300 mt-1">SAMU · 125</p>
+      </button>
+      <button onclick="startChat('power')" class="bg-red-800 hover:bg-red-700 border-2 border-red-600 hover:border-red-400 rounded-3xl p-6 text-center transition-all hover:scale-105 active:scale-95">
+        <span class="text-5xl block mb-3">⚡</span><p class="font-display font-bold text-lg" id="t-power">Energía</p><p class="text-xs text-red-300 mt-1">EPM · 115</p>
+      </button>
+      <button onclick="startChat('water')" class="bg-red-800 hover:bg-red-700 border-2 border-red-600 hover:border-red-400 rounded-3xl p-6 text-center transition-all hover:scale-105 active:scale-95">
+        <span class="text-5xl block mb-3">💧</span><p class="font-display font-bold text-lg" id="t-water">Agua</p><p class="text-xs text-red-300 mt-1">Acueducto · 116</p>
+      </button>
+      <button onclick="startChat('gas')" class="bg-red-800 hover:bg-red-700 border-2 border-red-600 hover:border-red-400 rounded-3xl p-6 text-center transition-all hover:scale-105 active:scale-95">
+        <span class="text-5xl block mb-3">🔥</span><p class="font-display font-bold text-lg" id="t-gas">Gas</p><p class="text-xs text-red-300 mt-1">Gas Natural · 164</p>
+      </button>
+    </div>
+  </div>
+
+  <!-- Chat screen -->
+  <div id="chatScreen" class="hidden flex-1 flex flex-col max-w-3xl mx-auto w-full p-4 pb-0">
+
+    <!-- Emergency phone banner -->
+    <div id="phoneBanner" class="bg-red-700 border border-red-500 rounded-2xl p-4 mb-4 flex items-center justify-between">
+      <div class="flex items-center gap-3"><span class="text-2xl">📞</span><div><p class="font-semibold" id="authorityName">Bomberos</p><p class="text-red-200 text-xs" id="authorityInfo">Llama ahora si es urgente</p></div></div>
+      <a id="authorityPhone" href="tel:119" class="bg-white text-red-700 font-display font-bold text-2xl px-6 py-2 rounded-xl hover:bg-red-50 transition-all">119</a>
+    </div>
+
+    <!-- Messages -->
+    <div class="flex-1 overflow-y-auto space-y-4 mb-4" id="emergencyMsgs">
+      <div class="flex gap-3">
+        <div class="w-9 h-9 bg-red-600 rounded-full flex items-center justify-center text-white flex-shrink-0">🤖</div>
+        <div class="bg-red-900 border border-red-700 rounded-2xl rounded-tl-sm p-4 max-w-md">
+          <p class="text-sm" id="firstMsg">Entendido. Voy a ayudarte a preparar el reporte para los Bomberos. Primero: ¿en qué parte exacta del edificio se detectó el fuego? (Torre, piso, apartamento)</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input -->
+    <div class="bg-red-900 border-t border-red-800 py-4">
+      <div class="flex gap-3">
+        <input id="emergencyInput" type="text" placeholder="Describe la situación..." onkeypress="if(event.key==='Enter')sendEmergency()"
+          class="flex-1 bg-red-800 border border-red-600 rounded-2xl px-4 py-3 text-white placeholder-red-400 focus:outline-none focus:border-red-400 text-sm"/>
+        <button onclick="sendEmergency()" class="bg-red-600 hover:bg-red-500 px-5 rounded-2xl text-sm font-bold transition-all">Enviar</button>
+      </div>
+      <p class="text-red-400 text-xs text-center mt-2" id="reportReady" style="display:none"><button onclick="generateReport()" class="bg-red-600 hover:bg-red-500 text-white font-semibold px-6 py-2 rounded-xl mt-1 transition-all">📋 Generar Reporte Completo</button></p>
+    </div>
+  </div>
+
+<script>
+let msgCount=0;
+const cfg={fire:{name:'Bomberos',phone:'119',emoji:'🔥',q1:'¿En qué parte exacta del edificio se detectó el fuego? (Torre, piso, apartamento)'},police:{name:'Policía',phone:'123',emoji:'👮',q1:'¿Qué tipo de incidente está ocurriendo y dónde exactamente?'},ambulance:{name:'Ambulancias',phone:'125',emoji:'🚑',q1:'¿Cuántas personas necesitan atención médica y cuál es el tipo de emergencia?'},power:{name:'EPM',phone:'115',emoji:'⚡',q1:'¿Cuántos apartamentos están sin energía? ¿Hay señales de cortocircuito?'},water:{name:'Acueducto',phone:'116',emoji:'💧',q1:'¿Dónde exactamente está la fuga de agua y qué tan grave es?'},gas:{name:'Gas Natural',phone:'164',emoji:'💨',q1:'¿Hay olor a gas? ¿En qué área? ¿Han evacuado?'}};
+function startChat(type){
+  document.getElementById('typeSelect').classList.add('hidden');
+  document.getElementById('chatScreen').classList.remove('hidden');
+  document.getElementById('chatScreen').classList.add('flex');
+  const c=cfg[type];
+  document.getElementById('authorityName').textContent=c.name;
+  document.getElementById('authorityPhone').textContent=c.phone;
+  document.getElementById('authorityPhone').href='tel:'+c.phone;
+  document.getElementById('firstMsg').textContent=document.getElementById('firstMsg').textContent.replace('Bomberos',c.name).replace('los Bomberos',c.name);
+}
+function sendEmergency(){
+  const inp=document.getElementById('emergencyInput');
+  if(!inp.value.trim()) return;
+  const msgs=document.getElementById('emergencyMsgs');
+  msgs.innerHTML+=`<div class="flex gap-3 justify-end"><div class="bg-red-600 rounded-2xl rounded-tr-sm p-4 max-w-md"><p class="text-sm">${inp.value}</p></div><div class="w-9 h-9 bg-red-300 rounded-full flex items-center justify-center text-red-900 font-bold text-sm flex-shrink-0">CG</div></div>`;
+  msgCount++;inp.value='';msgs.scrollTop=msgs.scrollHeight;
+  const qs=['¿Hay personas heridas o atrapadas en el área?','¿Han iniciado la evacuación del edificio?','¿Ya llamaste directamente a los Bomberos (119)?'];
+  setTimeout(()=>{
+    if(msgCount<3){msgs.innerHTML+=`<div class="flex gap-3"><div class="w-9 h-9 bg-red-600 rounded-full flex items-center justify-center text-white flex-shrink-0">🤖</div><div class="bg-red-900 border border-red-700 rounded-2xl rounded-tl-sm p-4 max-w-md"><p class="text-sm">${qs[msgCount-1]||'¿Hay algo más que deba incluir en el reporte?'}</p></div></div>`;}
+    else{msgs.innerHTML+=`<div class="flex gap-3"><div class="w-9 h-9 bg-red-600 rounded-full flex items-center justify-center text-white flex-shrink-0">🤖</div><div class="bg-red-900 border border-red-700 rounded-2xl rounded-tl-sm p-4 max-w-md"><p class="text-sm">Tengo suficiente información para generar el reporte. Pulsa el botón para obtener el texto listo para leer al operador de emergencias.</p></div></div>`;document.getElementById('reportReady').style.display='block';}
+    msgs.scrollTop=msgs.scrollHeight;
+  },1200);
+}
+function generateReport(){
+  alert('📋 Reporte generado:\n\nEMERGENCIA: INCENDIO\nConjunto Las Palmas — Torre A, Piso 4\nApartamento 405-A\nPersonas involucradas: 0 heridos reportados\nEvacuación: En proceso\nReportado por: Carlos García — Apto 101-A\nFecha/hora: '+new Date().toLocaleString('es-CO')+'\n\nEl administrador ha sido notificado.');
+}
+function setLang(l){}
+</script>
+</body>
+</html>

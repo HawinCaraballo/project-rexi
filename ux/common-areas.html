@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Rexi — Zonas Comunes</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800&display=swap" rel="stylesheet"/>
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],display:['Outfit','sans-serif']},colors:{primary:{50:'#f0fdfa',100:'#ccfbf1',600:'#0d9488',700:'#0f766e'}}}}}</script>
+<style>body{font-family:'Inter',sans-serif;}.font-display{font-family:'Outfit',sans-serif;}.sl{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;font-size:14px;color:#475569;cursor:pointer;}.sl:hover,.sl.act{background:#ccfbf1;color:#0d9488;font-weight:600;}.area-card{transition:all .2s;cursor:pointer;}.area-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.1);}</style>
+</head>
+<body class="bg-slate-50 min-h-screen flex">
+<aside class="w-64 bg-white border-r border-slate-200 flex-col fixed h-full hidden lg:flex">
+  <div class="p-5 border-b border-slate-100 flex items-center gap-3"><div class="w-9 h-9 bg-primary-600 rounded-xl flex items-center justify-center"><span class="text-white font-display font-bold text-lg">R</span></div><span class="font-display font-bold text-slate-800">Rexi</span></div>
+  <nav class="flex-1 p-3 space-y-0.5 text-sm overflow-y-auto">
+    <div class="sl" onclick="window.location='admin-dashboard.html'"><span>📊</span>Panel</div>
+    <div class="sl" onclick="window.location='fees-list.html'"><span>💰</span>Cuotas</div>
+    <div class="sl" onclick="window.location='visitors-list.html'"><span>🚶</span>Visitantes</div>
+    <div class="sl act"><span>🏊</span>Zonas Comunes</div>
+    <div class="sl" onclick="window.location='notifications.html'"><span>🔔</span>Notificaciones</div>
+    <div class="sl" onclick="window.location='ai-bot.html'"><span>🤖</span>Documentos y Bot</div>
+  </nav>
+  <div class="p-4 border-t border-slate-100 flex items-center gap-3"><div class="w-9 h-9 bg-primary-100 rounded-full flex items-center justify-center text-primary-700 font-bold text-sm">CG</div><div><p class="text-sm font-semibold text-slate-800">Carlos García</p><p class="text-xs text-slate-400">Propietario</p></div></div>
+</aside>
+
+<div class="flex-1 flex flex-col lg:ml-64">
+  <header class="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between sticky top-0 z-10">
+    <div><h1 class="font-display font-bold text-xl text-slate-900" id="pageTitle">Zonas Comunes</h1><p class="text-xs text-slate-400">Las Palmas · 6 zonas disponibles</p></div>
+    <div class="flex gap-3 items-center">
+      <div class="hidden sm:flex items-center gap-1 bg-slate-100 rounded-xl p-1"><button onclick="setLang('es')" class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 bg-white shadow-sm">ES</button><button onclick="setLang('en')" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">EN</button></div>
+      <a href="#" class="text-sm text-primary-600 font-medium bg-primary-50 px-4 py-2.5 rounded-xl hover:bg-primary-100">📅 Mis reservas</a>
+    </div>
+  </header>
+
+  <main class="p-6">
+    <!-- Debt warning (conditional) -->
+    <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 mb-5 flex items-center gap-3">
+      <span class="text-xl">⚠️</span>
+      <div><p class="font-semibold text-amber-800 text-sm" id="debtTitle">Tienes cuotas en mora</p><p class="text-xs text-amber-600" id="debtDesc">Algunas zonas requieren estar al día para reservar. <a href="fees-list.html" class="underline font-medium">Ver cuotas →</a></p></div>
+    </div>
+
+    <!-- Filter chips -->
+    <div class="flex gap-2 mb-6 flex-wrap">
+      <button class="px-4 py-2 rounded-xl text-sm font-medium bg-slate-800 text-white">Todas</button>
+      <button class="px-4 py-2 rounded-xl text-sm font-medium bg-white border border-slate-200 text-slate-600 hover:border-primary-400">Disponibles</button>
+      <button class="px-4 py-2 rounded-xl text-sm font-medium bg-white border border-slate-200 text-slate-600 hover:border-primary-400">Gratuitas</button>
+      <button class="px-4 py-2 rounded-xl text-sm font-medium bg-white border border-slate-200 text-slate-600 hover:border-primary-400">Con costo</button>
+    </div>
+
+    <!-- Grid -->
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+      <div class="area-card bg-white rounded-3xl border border-slate-200 overflow-hidden" onclick="window.location='common-area-booking.html'">
+        <div class="h-40 bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center relative">
+          <span class="text-7xl">🏊</span>
+          <div class="absolute top-3 right-3 bg-emerald-500 text-white text-xs font-semibold px-2.5 py-1 rounded-lg" id="freeTag">Gratuito</div>
+        </div>
+        <div class="p-5">
+          <div class="flex justify-between items-start mb-2"><h3 class="font-display font-bold text-lg text-slate-900" id="pool">Piscina</h3><span class="text-xs text-emerald-600 font-semibold bg-emerald-50 px-2 py-0.5 rounded-lg">● Libre</span></div>
+          <p class="text-xs text-slate-500 mb-4">Cap: 25 · Abierto: 7:00–20:00</p>
+          <button class="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 rounded-xl transition-all text-sm" id="bookBtn">Reservar</button>
+        </div>
+      </div>
+
+      <div class="area-card bg-white rounded-3xl border border-slate-200 overflow-hidden" onclick="window.location='common-area-booking.html'">
+        <div class="h-40 bg-gradient-to-br from-slate-600 to-slate-800 flex items-center justify-center relative">
+          <span class="text-7xl">🏋️</span>
+          <div class="absolute top-3 right-3 bg-emerald-500 text-white text-xs font-semibold px-2.5 py-1 rounded-lg">Gratuito</div>
+        </div>
+        <div class="p-5">
+          <div class="flex justify-between items-start mb-2"><h3 class="font-display font-bold text-lg text-slate-900">Gimnasio</h3><span class="text-xs text-emerald-600 font-semibold bg-emerald-50 px-2 py-0.5 rounded-lg">● Libre</span></div>
+          <p class="text-xs text-slate-500 mb-4">Cap: 15 · Abierto: 5:00–22:00</p>
+          <button class="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 rounded-xl transition-all text-sm">Reservar</button>
+        </div>
+      </div>
+
+      <div class="area-card bg-white rounded-3xl border border-slate-200 overflow-hidden" onclick="window.location='common-area-booking.html'">
+        <div class="h-40 bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center relative">
+          <span class="text-7xl">🎉</span>
+          <div class="absolute top-3 right-3 bg-amber-700 text-white text-xs font-semibold px-2.5 py-1 rounded-lg">$150,000</div>
+        </div>
+        <div class="p-5">
+          <div class="flex justify-between items-start mb-2"><h3 class="font-display font-bold text-lg text-slate-900">Salón Social</h3><span class="text-xs text-amber-600 font-semibold bg-amber-50 px-2 py-0.5 rounded-lg">● Libre</span></div>
+          <p class="text-xs text-slate-500 mb-4">Cap: 80 · Abierto: 10:00–22:00</p>
+          <button class="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 rounded-xl transition-all text-sm">Reservar</button>
+        </div>
+      </div>
+
+      <div class="area-card bg-white rounded-3xl border border-slate-200 overflow-hidden">
+        <div class="h-40 bg-gradient-to-br from-emerald-400 to-emerald-700 flex items-center justify-center relative">
+          <span class="text-7xl">🏓</span>
+          <div class="absolute top-3 right-3 bg-slate-700 text-white text-xs font-semibold px-2.5 py-1 rounded-lg">Ocupado</div>
+        </div>
+        <div class="p-5">
+          <div class="flex justify-between items-start mb-2"><h3 class="font-display font-bold text-lg text-slate-900">Zona de Juegos</h3><span class="text-xs text-slate-500 font-semibold bg-slate-100 px-2 py-0.5 rounded-lg">● Ocupado</span></div>
+          <p class="text-xs text-slate-500 mb-4">Cap: 10 · Abierto: 8:00–20:00</p>
+          <button class="w-full bg-slate-200 text-slate-500 font-semibold py-3 rounded-xl text-sm cursor-not-allowed">No disponible ahora</button>
+        </div>
+      </div>
+
+      <div class="area-card bg-white rounded-3xl border border-slate-200 overflow-hidden" onclick="window.location='common-area-booking.html'">
+        <div class="h-40 bg-gradient-to-br from-blue-400 to-blue-700 flex items-center justify-center relative">
+          <span class="text-7xl">🧘</span>
+          <div class="absolute top-3 right-3 bg-emerald-500 text-white text-xs font-semibold px-2.5 py-1 rounded-lg">Gratuito</div>
+        </div>
+        <div class="p-5">
+          <div class="flex justify-between items-start mb-2"><h3 class="font-display font-bold text-lg text-slate-900">Yoga & Meditación</h3><span class="text-xs text-emerald-600 font-semibold bg-emerald-50 px-2 py-0.5 rounded-lg">● Libre</span></div>
+          <p class="text-xs text-slate-500 mb-4">Cap: 20 · Abierto: 6:00–21:00</p>
+          <button class="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 rounded-xl transition-all text-sm">Reservar</button>
+        </div>
+      </div>
+
+      <div class="area-card bg-white rounded-3xl border border-slate-200 overflow-hidden" onclick="window.location='common-area-booking.html'">
+        <div class="h-40 bg-gradient-to-br from-rose-400 to-rose-700 flex items-center justify-center relative">
+          <span class="text-7xl">🍖</span>
+          <div class="absolute top-3 right-3 bg-amber-700 text-white text-xs font-semibold px-2.5 py-1 rounded-lg">$80,000</div>
+        </div>
+        <div class="p-5">
+          <div class="flex justify-between items-start mb-2"><h3 class="font-display font-bold text-lg text-slate-900">BBQ / Parrilla</h3><span class="text-xs text-emerald-600 font-semibold bg-emerald-50 px-2 py-0.5 rounded-lg">● Libre</span></div>
+          <p class="text-xs text-slate-500 mb-4">Cap: 30 · Abierto: 10:00–20:00</p>
+          <button class="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 rounded-xl transition-all text-sm">Reservar</button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+<script>function setLang(l){}</script>
+</body>
+</html>

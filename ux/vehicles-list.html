@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Rexi — Vehículos</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800&display=swap" rel="stylesheet"/>
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],display:['Outfit','sans-serif']},colors:{primary:{50:'#f0fdfa',100:'#ccfbf1',600:'#0d9488',700:'#0f766e'}}}}}</script>
+<style>body{font-family:'Inter',sans-serif;}.font-display{font-family:'Outfit',sans-serif;}.sl{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;font-size:14px;color:#475569;cursor:pointer;}.sl:hover,.sl.act{background:#ccfbf1;color:#0d9488;font-weight:600;}tr:hover td{background:#f8fafc;}.inp{width:100%;padding:10px 14px;border-radius:12px;border:1px solid #e2e8f0;font-size:14px;outline:none;}</style>
+</head>
+<body class="bg-slate-50 min-h-screen flex">
+<aside class="w-64 bg-white border-r border-slate-200 flex-col fixed h-full hidden lg:flex">
+  <div class="p-5 border-b border-slate-100 flex items-center gap-3"><div class="w-9 h-9 bg-primary-600 rounded-xl flex items-center justify-center"><span class="text-white font-display font-bold text-lg">R</span></div><span class="font-display font-bold text-slate-800">Rexi</span></div>
+  <nav class="flex-1 p-3 space-y-0.5 text-sm overflow-y-auto">
+    <div class="sl" onclick="window.location='admin-dashboard.html'"><span>📊</span>Panel</div>
+    <div class="sl" onclick="window.location='visitors-list.html'"><span>🚶</span>Visitantes</div>
+    <div class="sl act"><span>🚗</span>Vehículos</div>
+    <div class="sl" onclick="window.location='guard-search.html'"><span>🔍</span>Vigilancia</div>
+    <div class="sl" onclick="window.location='fines-list.html'"><span>🚫</span>Multas</div>
+  </nav>
+  <div class="p-4 border-t border-slate-100 flex items-center gap-3"><div class="w-9 h-9 bg-primary-100 rounded-full flex items-center justify-center text-primary-700 font-bold text-sm">AN</div><div><p class="text-sm font-semibold text-slate-800">Ana Martínez</p><p class="text-xs text-slate-400">Administradora</p></div></div>
+</aside>
+
+<div class="flex-1 flex flex-col lg:ml-64">
+  <header class="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between sticky top-0 z-10">
+    <div><h1 class="font-display font-bold text-xl text-slate-900">Vehículos</h1><p class="text-xs text-slate-400">Las Palmas · 82 vehículos registrados</p></div>
+    <div class="flex gap-3 items-center">
+      <div class="hidden sm:flex items-center gap-1 bg-slate-100 rounded-xl p-1"><button class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 bg-white shadow-sm">ES</button><button class="px-3 py-1.5 rounded-lg text-xs text-slate-500">EN</button></div>
+      <button onclick="document.getElementById('addVehicleModal').classList.remove('hidden')" class="bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl flex items-center gap-2">+ Agregar Vehículo</button>
+    </div>
+  </header>
+
+  <main class="p-6">
+    <!-- Summary -->
+    <div class="grid grid-cols-3 gap-4 mb-5">
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 flex items-center gap-3"><span class="text-2xl">🚗</span><div><p class="font-display font-bold text-xl text-slate-900">58</p><p class="text-xs text-slate-500">Carros</p></div></div>
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 flex items-center gap-3"><span class="text-2xl">🏍️</span><div><p class="font-display font-bold text-xl text-slate-900">21</p><p class="text-xs text-slate-500">Motos</p></div></div>
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 flex items-center gap-3"><span class="text-2xl">🛵</span><div><p class="font-display font-bold text-xl text-slate-900">3</p><p class="text-xs text-slate-500">Otros</p></div></div>
+    </div>
+
+    <!-- Filters -->
+    <div class="bg-white rounded-2xl border border-slate-200 p-4 mb-4 flex flex-wrap gap-3">
+      <div class="relative flex-1 min-w-48"><span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">🔍</span><input id="plateSearch" oninput="filterVehicles(this.value)" class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-600" placeholder="Buscar por placa, dueño o apartamento..."/></div>
+      <select class="px-3 py-2.5 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary-600"><option>Todos los tipos</option><option>Carro</option><option>Moto</option><option>Otro</option></select>
+    </div>
+
+    <!-- Table -->
+    <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead><tr class="border-b border-slate-100 bg-slate-50">
+            <th class="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase">Placa</th>
+            <th class="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase">Vehículo</th>
+            <th class="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase">Propietario</th>
+            <th class="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase">Apartamento</th>
+            <th class="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase">Parqueadero</th>
+            <th class="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase">Estado</th>
+            <th class="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase">Acciones</th>
+          </tr></thead>
+          <tbody id="vehicleTable">
+            <tr class="border-b border-slate-50"><td class="px-5 py-4"><span class="font-mono text-sm font-bold text-slate-800 bg-slate-100 px-2.5 py-1 rounded-lg">ABC-123</span></td><td class="px-5 py-4"><p class="text-sm font-medium text-slate-800">🚗 Toyota Corolla</p><p class="text-xs text-slate-400">Azul · 2021</p></td><td class="px-5 py-4 text-sm text-slate-600">Carlos García</td><td class="px-5 py-4 text-sm text-slate-600">101-A · Torre A</td><td class="px-5 py-4"><span class="bg-primary-100 text-primary-700 text-xs font-medium px-2.5 py-1 rounded-lg">P-01 · Torre A</span></td><td class="px-5 py-4"><span class="bg-emerald-100 text-emerald-700 text-xs font-semibold px-2.5 py-1 rounded-lg">Dentro</span></td><td class="px-5 py-4"><div class="flex gap-2"><button class="text-xs bg-slate-100 text-slate-600 font-medium px-3 py-1.5 rounded-lg">Editar</button><button class="text-xs bg-red-100 text-red-600 font-medium px-3 py-1.5 rounded-lg">Quitar</button></div></td></tr>
+            <tr class="border-b border-slate-50"><td class="px-5 py-4"><span class="font-mono text-sm font-bold text-slate-800 bg-slate-100 px-2.5 py-1 rounded-lg">XYZ-456</span></td><td class="px-5 py-4"><p class="text-sm font-medium text-slate-800">🏍️ Honda CBR</p><p class="text-xs text-slate-400">Negro · 2020</p></td><td class="px-5 py-4 text-sm text-slate-600">Carlos García</td><td class="px-5 py-4 text-sm text-slate-600">101-A · Torre A</td><td class="px-5 py-4 text-sm text-slate-400">—</td><td class="px-5 py-4"><span class="bg-slate-100 text-slate-500 text-xs font-semibold px-2.5 py-1 rounded-lg">Fuera</span></td><td class="px-5 py-4"><div class="flex gap-2"><button class="text-xs bg-slate-100 text-slate-600 font-medium px-3 py-1.5 rounded-lg">Editar</button><button class="text-xs bg-red-100 text-red-600 font-medium px-3 py-1.5 rounded-lg">Quitar</button></div></td></tr>
+            <tr class="border-b border-slate-50"><td class="px-5 py-4"><span class="font-mono text-sm font-bold text-slate-800 bg-slate-100 px-2.5 py-1 rounded-lg">MNO-789</span></td><td class="px-5 py-4"><p class="text-sm font-medium text-slate-800">🚗 Mazda CX-5</p><p class="text-xs text-slate-400">Gris · 2023</p></td><td class="px-5 py-4 text-sm text-slate-600">María Rodríguez</td><td class="px-5 py-4 text-sm text-slate-600">203-B · Torre B</td><td class="px-5 py-4"><span class="bg-primary-100 text-primary-700 text-xs font-medium px-2.5 py-1 rounded-lg">P-12 · Torre B</span></td><td class="px-5 py-4"><span class="bg-emerald-100 text-emerald-700 text-xs font-semibold px-2.5 py-1 rounded-lg">Dentro</span></td><td class="px-5 py-4"><div class="flex gap-2"><button class="text-xs bg-slate-100 text-slate-600 font-medium px-3 py-1.5 rounded-lg">Editar</button><button class="text-xs bg-red-100 text-red-600 font-medium px-3 py-1.5 rounded-lg">Quitar</button></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="px-5 py-4 border-t border-slate-100 flex justify-between items-center">
+        <p class="text-sm text-slate-500">Mostrando 3 de 82 vehículos</p>
+        <div class="flex gap-2"><button class="w-9 h-9 rounded-xl border border-slate-200 text-slate-400" disabled>←</button><button class="w-9 h-9 rounded-xl bg-primary-600 text-white text-sm font-semibold">1</button><button class="w-9 h-9 rounded-xl border border-slate-200 text-slate-600 text-sm">2</button><button class="w-9 h-9 rounded-xl border border-slate-200 text-slate-500">→</button></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Add Vehicle Modal -->
+<div id="addVehicleModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8">
+    <div class="flex justify-between mb-6"><h2 class="font-display font-bold text-xl text-slate-900">Agregar Vehículo</h2><button onclick="document.getElementById('addVehicleModal').classList.add('hidden')" class="text-slate-400 text-xl">✕</button></div>
+    <form class="space-y-4" onsubmit="e=>{e.preventDefault();document.getElementById('addVehicleModal').classList.add('hidden');}">
+      <div><label class="block text-sm font-medium text-slate-700 mb-1.5">Placa *</label><input class="inp uppercase" placeholder="ABC-123" required/></div>
+      <div><label class="block text-sm font-medium text-slate-700 mb-1.5">Tipo *</label><select class="inp bg-white"><option>Carro</option><option>Moto</option><option>Camioneta</option><option>Otro</option></select></div>
+      <div class="grid grid-cols-2 gap-3"><div><label class="block text-sm font-medium text-slate-700 mb-1.5">Marca</label><input class="inp" placeholder="Toyota"/></div><div><label class="block text-sm font-medium text-slate-700 mb-1.5">Modelo</label><input class="inp" placeholder="Corolla"/></div></div>
+      <div class="grid grid-cols-2 gap-3"><div><label class="block text-sm font-medium text-slate-700 mb-1.5">Color</label><input class="inp" placeholder="Azul"/></div><div><label class="block text-sm font-medium text-slate-700 mb-1.5">Año</label><input class="inp" type="number" placeholder="2021"/></div></div>
+      <div><label class="block text-sm font-medium text-slate-700 mb-1.5">Apartamento *</label><select class="inp bg-white"><option>101-A · Carlos García</option><option>203-B · María Rodríguez</option><option>304-A · Jorge Suárez</option></select></div>
+      <div><label class="block text-sm font-medium text-slate-700 mb-1.5">Parqueadero asignado</label><select class="inp bg-white"><option>Sin asignar</option><option>P-01 · Torre A</option><option>P-02 · Torre A</option><option>P-12 · Torre B</option></select></div>
+      <div class="flex gap-3 pt-2"><button type="button" onclick="document.getElementById('addVehicleModal').classList.add('hidden')" class="flex-1 py-3 rounded-xl border border-slate-200 text-slate-600 text-sm">Cancelar</button><button type="submit" class="flex-1 py-3 rounded-xl bg-primary-600 text-white text-sm font-semibold">Guardar</button></div>
+    </form>
+  </div>
+</div>
+<script>function filterVehicles(q){document.querySelectorAll('#vehicleTable tr').forEach(r=>{r.style.display=r.innerText.toLowerCase().includes(q.toLowerCase())?'':'none';});}</script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Rexi — Visitantes</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800&display=swap" rel="stylesheet"/>
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],display:['Outfit','sans-serif']},colors:{primary:{50:'#f0fdfa',100:'#ccfbf1',600:'#0d9488',700:'#0f766e'}}}}}</script>
+<style>body{font-family:'Inter',sans-serif;}.font-display{font-family:'Outfit',sans-serif;}.sl{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;font-size:14px;color:#475569;cursor:pointer;}.sl:hover,.sl.act{background:#ccfbf1;color:#0d9488;font-weight:600;}tr:hover td{background:#f8fafc;}</style>
+</head>
+<body class="bg-slate-50 min-h-screen flex">
+<aside class="w-64 bg-white border-r border-slate-200 flex-col fixed h-full hidden lg:flex">
+  <div class="p-5 border-b border-slate-100 flex items-center gap-3"><div class="w-9 h-9 bg-primary-600 rounded-xl flex items-center justify-center"><span class="text-white font-display font-bold text-lg">R</span></div><span class="font-display font-bold text-slate-800">Rexi</span></div>
+  <nav class="flex-1 p-3 space-y-0.5 text-sm overflow-y-auto">
+    <div class="sl" onclick="window.location='admin-dashboard.html'"><span>📊</span>Panel</div>
+    <div class="sl" onclick="window.location='owners-list.html'"><span>👥</span>Propietarios</div>
+    <div class="sl" onclick="window.location='fees-list.html'"><span>💰</span>Cuotas</div>
+    <div class="sl act"><span>🚶</span>Visitantes</div>
+    <div class="sl" onclick="window.location='vehicles-list.html'"><span>🚗</span>Vehículos</div>
+    <div class="sl" onclick="window.location='guard-search.html'"><span>🔍</span>Vigilancia</div>
+    <div class="sl" onclick="window.location='fines-list.html'"><span>🚫</span>Multas</div>
+  </nav>
+  <div class="p-4 border-t border-slate-100 flex items-center gap-3"><div class="w-9 h-9 bg-primary-100 rounded-full flex items-center justify-center text-primary-700 font-bold text-sm">AN</div><div><p class="text-sm font-semibold text-slate-800">Ana Martínez</p><p class="text-xs text-slate-400">Administradora</p></div></div>
+</aside>
+
+<div class="flex-1 flex flex-col lg:ml-64">
+  <header class="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between sticky top-0 z-10">
+    <div><h1 class="font-display font-bold text-xl text-slate-900">Visitantes</h1><p class="text-xs text-slate-400">Las Palmas · 28 visitantes activos</p></div>
+    <div class="flex gap-3 items-center">
+      <div class="hidden sm:flex items-center gap-1 bg-slate-100 rounded-xl p-1"><button class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 bg-white shadow-sm">ES</button><button class="px-3 py-1.5 rounded-lg text-xs text-slate-500">EN</button></div>
+      <a href="visitor-form.html" class="bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl flex items-center gap-2">+ Registrar Visitante</a>
+    </div>
+  </header>
+
+  <main class="p-6">
+    <!-- Filters -->
+    <div class="bg-white rounded-2xl border border-slate-200 p-4 mb-4 flex flex-wrap gap-3">
+      <div class="relative flex-1 min-w-48"><span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">🔍</span><input type="text" placeholder="Buscar por nombre, cédula o apartamento..." class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-600"/></div>
+      <select class="px-3 py-2.5 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary-600"><option>Todos los tipos</option><option>Temporal</option><option>Permanente</option></select>
+      <div class="flex gap-2">
+        <button class="px-3 py-2 rounded-xl text-xs font-medium bg-slate-800 text-white">Todos</button>
+        <button class="px-3 py-2 rounded-xl text-xs font-medium bg-emerald-100 text-emerald-700">Activos</button>
+        <button class="px-3 py-2 rounded-xl text-xs font-medium bg-slate-100 text-slate-600">Expirados</button>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead><tr class="border-b border-slate-100 bg-slate-50">
+            <th class="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase">Visitante</th>
+            <th class="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase">Apartamento</th>
+            <th class="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase">Tipo</th>
+            <th class="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase">Vence</th>
+            <th class="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase">Vehículo</th>
+            <th class="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase">Estado</th>
+            <th class="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase">QR / Acciones</th>
+          </tr></thead>
+          <tbody>
+            <tr class="border-b border-slate-50 transition-colors">
+              <td class="px-5 py-4"><div class="flex items-center gap-3"><div class="w-9 h-9 bg-blue-100 rounded-full flex items-center justify-center text-blue-700 font-bold text-sm">JP</div><div><p class="text-sm font-semibold text-slate-800">Juan Pérez</p><p class="text-xs text-slate-400">CC 55667788</p></div></div></td>
+              <td class="px-5 py-4 text-sm text-slate-600">101-A · Torre A</td>
+              <td class="px-5 py-4"><span class="bg-amber-100 text-amber-700 text-xs font-medium px-2.5 py-1 rounded-lg">Temporal</span></td>
+              <td class="px-5 py-4 text-sm text-slate-600">25 abr 2026 <span class="text-emerald-600 font-medium text-xs">(3d)</span></td>
+              <td class="px-5 py-4"><span class="bg-slate-100 text-slate-600 text-xs px-2.5 py-1 rounded-lg font-mono">ABC-123</span></td>
+              <td class="px-5 py-4"><span class="bg-emerald-100 text-emerald-700 text-xs font-semibold px-2.5 py-1 rounded-lg">Activo</span></td>
+              <td class="px-5 py-4"><div class="flex gap-2"><a href="visitor-qr.html" class="text-xs bg-primary-50 text-primary-600 font-medium px-3 py-1.5 rounded-lg">Ver QR</a><button class="text-xs bg-slate-100 text-slate-600 font-medium px-3 py-1.5 rounded-lg">Desactivar</button></div></td>
+            </tr>
+            <tr class="border-b border-slate-50 transition-colors">
+              <td class="px-5 py-4"><div class="flex items-center gap-3"><div class="w-9 h-9 bg-rose-100 rounded-full flex items-center justify-center text-rose-700 font-bold text-sm">MG</div><div><p class="text-sm font-semibold text-slate-800">María González</p><p class="text-xs text-slate-400">CC 11223344</p></div></div></td>
+              <td class="px-5 py-4 text-sm text-slate-600">203-B · Torre B</td>
+              <td class="px-5 py-4"><span class="bg-blue-100 text-blue-700 text-xs font-medium px-2.5 py-1 rounded-lg">Permanente</span></td>
+              <td class="px-5 py-4 text-sm text-slate-400">—</td>
+              <td class="px-5 py-4 text-sm text-slate-400">—</td>
+              <td class="px-5 py-4"><span class="bg-emerald-100 text-emerald-700 text-xs font-semibold px-2.5 py-1 rounded-lg">Activo</span></td>
+              <td class="px-5 py-4"><div class="flex gap-2"><a href="visitor-qr.html" class="text-xs bg-primary-50 text-primary-600 font-medium px-3 py-1.5 rounded-lg">Ver QR</a><button class="text-xs bg-slate-100 text-slate-600 font-medium px-3 py-1.5 rounded-lg">Desactivar</button></div></td>
+            </tr>
+            <tr class="border-b border-slate-50 transition-colors opacity-60">
+              <td class="px-5 py-4"><div class="flex items-center gap-3"><div class="w-9 h-9 bg-slate-100 rounded-full flex items-center justify-center text-slate-500 font-bold text-sm">RL</div><div><p class="text-sm font-semibold text-slate-800">Roberto López</p><p class="text-xs text-slate-400">CC 99887766</p></div></div></td>
+              <td class="px-5 py-4 text-sm text-slate-600">304-A · Torre A</td>
+              <td class="px-5 py-4"><span class="bg-amber-100 text-amber-700 text-xs font-medium px-2.5 py-1 rounded-lg">Temporal</span></td>
+              <td class="px-5 py-4 text-sm text-red-500">18 abr 2026 <span class="font-medium">(expirado)</span></td>
+              <td class="px-5 py-4"><span class="bg-slate-100 text-slate-600 text-xs px-2.5 py-1 rounded-lg font-mono">XYZ-789</span></td>
+              <td class="px-5 py-4"><span class="bg-slate-100 text-slate-500 text-xs font-semibold px-2.5 py-1 rounded-lg">Expirado</span></td>
+              <td class="px-5 py-4"><a href="visitor-form.html" class="text-xs bg-slate-100 text-slate-600 font-medium px-3 py-1.5 rounded-lg">Renovar</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="px-5 py-4 border-t border-slate-100 flex items-center justify-between">
+        <p class="text-sm text-slate-500">Mostrando 3 de 28 visitantes</p>
+        <div class="flex gap-2"><button class="w-9 h-9 rounded-xl border border-slate-200 text-slate-400 disabled:opacity-40" disabled>←</button><button class="w-9 h-9 rounded-xl bg-primary-600 text-white text-sm font-semibold">1</button><button class="w-9 h-9 rounded-xl border border-slate-200 text-slate-600 text-sm">2</button><button class="w-9 h-9 rounded-xl border border-slate-200 text-slate-500">→</button></div>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

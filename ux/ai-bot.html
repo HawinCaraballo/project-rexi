@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Rexi — Bot de Documentos</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800&display=swap" rel="stylesheet"/>
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],display:['Outfit','sans-serif']},colors:{primary:{50:'#f0fdfa',100:'#ccfbf1',600:'#0d9488',700:'#0f766e'}}}}}</script>
+<style>body{font-family:'Inter',sans-serif;}.font-display{font-family:'Outfit',sans-serif;}.sl{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;font-size:14px;color:#475569;cursor:pointer;}.sl:hover,.sl.act{background:#ccfbf1;color:#0d9488;font-weight:600;}.typing span{display:inline-block;width:7px;height:7px;background:#0d9488;border-radius:50%;animation:bounce 1.2s infinite;margin:0 2px;}.typing span:nth-child(2){animation-delay:.2s;}.typing span:nth-child(3){animation-delay:.4s;}@keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px);}}</style>
+</head>
+<body class="bg-slate-50 min-h-screen flex">
+<aside class="w-64 bg-white border-r border-slate-200 flex-col fixed h-full hidden lg:flex">
+  <div class="p-5 border-b border-slate-100 flex items-center gap-3"><div class="w-9 h-9 bg-primary-600 rounded-xl flex items-center justify-center"><span class="text-white font-display font-bold text-lg">R</span></div><span class="font-display font-bold text-slate-800">Rexi</span></div>
+  <nav class="flex-1 p-3 space-y-0.5 text-sm overflow-y-auto">
+    <div class="sl" onclick="window.location='admin-dashboard.html'"><span>📊</span>Panel</div>
+    <div class="sl" onclick="window.location='fees-list.html'"><span>💰</span>Cuotas</div>
+    <div class="sl" onclick="window.location='visitors-list.html'"><span>🚶</span>Visitantes</div>
+    <div class="sl" onclick="window.location='common-areas.html'"><span>🏊</span>Zonas Comunes</div>
+    <div class="sl" onclick="window.location='notifications.html'"><span>🔔</span>Notificaciones</div>
+    <div class="sl act"><span>🤖</span>Documentos y Bot</div>
+    <div class="sl" onclick="window.location='emergency-chat.html'"><span>🚨</span>Emergencias</div>
+  </nav>
+  <div class="p-4 border-t border-slate-100 flex items-center gap-3"><div class="w-9 h-9 bg-primary-100 rounded-full flex items-center justify-center text-primary-700 font-bold text-sm">CG</div><div><p class="text-sm font-semibold text-slate-800">Carlos García</p><p class="text-xs text-slate-400">Propietario</p></div></div>
+</aside>
+
+<div class="flex-1 flex flex-col lg:ml-64" style="height:100vh">
+  <header class="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between sticky top-0 z-10">
+    <div><h1 class="font-display font-bold text-xl text-slate-900">Documentos y Asistente</h1><p class="text-xs text-slate-400">Consulta normas del conjunto con IA</p></div>
+    <div class="flex gap-3 items-center">
+      <div class="hidden sm:flex items-center gap-1 bg-slate-100 rounded-xl p-1"><button onclick="setLang('es')" class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 bg-white shadow-sm">ES</button><button onclick="setLang('en')" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">EN</button></div>
+    </div>
+  </header>
+
+  <div class="flex-1 flex overflow-hidden">
+    <!-- Left: Documents -->
+    <div class="w-72 border-r border-slate-200 bg-white flex flex-col hidden md:flex">
+      <div class="p-4 border-b border-slate-100">
+        <div class="relative"><span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">🔍</span><input class="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-600" placeholder="Buscar documentos..."/></div>
+      </div>
+      <div class="flex-1 overflow-y-auto p-4 space-y-2">
+        <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer transition-all border border-slate-100">
+          <span class="text-2xl flex-shrink-0">📄</span>
+          <div class="min-w-0"><p class="text-sm font-semibold text-slate-800 truncate">Reglamento de Convivencia</p><p class="text-xs text-slate-400">PDF · 24 páginas · v2.1</p></div>
+        </div>
+        <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer transition-all border border-slate-100">
+          <span class="text-2xl flex-shrink-0">📋</span>
+          <div class="min-w-0"><p class="text-sm font-semibold text-slate-800 truncate">Manual de Propietarios</p><p class="text-xs text-slate-400">PDF · 18 páginas · v1.3</p></div>
+        </div>
+        <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer transition-all border border-slate-100">
+          <span class="text-2xl flex-shrink-0">📅</span>
+          <div class="min-w-0"><p class="text-sm font-semibold text-slate-800 truncate">Horarios Zonas Comunes</p><p class="text-xs text-slate-400">PDF · 2 páginas · v1.0</p></div>
+        </div>
+        <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer transition-all border border-slate-100">
+          <span class="text-2xl flex-shrink-0">🐾</span>
+          <div class="min-w-0"><p class="text-sm font-semibold text-slate-800 truncate">Política de Mascotas</p><p class="text-xs text-slate-400">PDF · 4 páginas · v1.0</p></div>
+        </div>
+        <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer transition-all border border-slate-100">
+          <span class="text-2xl flex-shrink-0">🅿️</span>
+          <div class="min-w-0"><p class="text-sm font-semibold text-slate-800 truncate">Reglamento de Parqueaderos</p><p class="text-xs text-slate-400">PDF · 6 páginas · v1.2</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Chat -->
+    <div class="flex-1 flex flex-col">
+      <!-- Chat header -->
+      <div class="bg-white border-b border-slate-100 px-5 py-3 flex items-center gap-3">
+        <div class="w-9 h-9 bg-primary-600 rounded-full flex items-center justify-center text-white text-sm">🤖</div>
+        <div><p class="font-semibold text-slate-800 text-sm">Asistente Rexi</p><p class="text-xs text-emerald-500">● En línea · Accede a 5 documentos</p></div>
+      </div>
+
+      <!-- Messages -->
+      <div class="flex-1 overflow-y-auto p-5 space-y-5 bg-slate-50" id="chatMessages">
+
+        <!-- Bot greeting -->
+        <div class="flex gap-3">
+          <div class="w-9 h-9 bg-primary-600 rounded-full flex items-center justify-center text-white text-sm flex-shrink-0">🤖</div>
+          <div class="max-w-sm">
+            <div class="bg-white border border-slate-200 rounded-2xl rounded-tl-sm p-4 shadow-sm">
+              <p class="text-sm text-slate-800" id="greetMsg">¡Hola! Soy el asistente de Rexi. Puedo responder preguntas sobre el reglamento y normas del conjunto <strong>Las Palmas</strong>. ¿En qué te puedo ayudar?</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Suggested questions -->
+        <div class="pl-12 flex flex-wrap gap-2" id="suggestions">
+          <button onclick="sendSuggestion(this)" class="bg-white border border-slate-200 hover:border-primary-400 hover:bg-primary-50 text-sm text-slate-600 px-4 py-2 rounded-xl transition-all" data-msg="¿Puedo tener mascotas?">¿Puedo tener mascotas?</button>
+          <button onclick="sendSuggestion(this)" class="bg-white border border-slate-200 hover:border-primary-400 hover:bg-primary-50 text-sm text-slate-600 px-4 py-2 rounded-xl transition-all" data-msg="¿Cuál es el horario del gimnasio?">¿Horario del gimnasio?</button>
+          <button onclick="sendSuggestion(this)" class="bg-white border border-slate-200 hover:border-primary-400 hover:bg-primary-50 text-sm text-slate-600 px-4 py-2 rounded-xl transition-all" data-msg="¿Cómo reservo el salón?">¿Cómo reservo el salón?</button>
+        </div>
+
+        <!-- User question -->
+        <div class="flex gap-3 justify-end">
+          <div class="max-w-sm">
+            <div class="bg-primary-600 rounded-2xl rounded-tr-sm p-4">
+              <p class="text-sm text-white">¿Puedo tener mascotas en el apartamento?</p>
+            </div>
+          </div>
+          <div class="w-9 h-9 bg-primary-100 rounded-full flex items-center justify-center text-primary-700 font-bold text-sm flex-shrink-0">CG</div>
+        </div>
+
+        <!-- Bot answer -->
+        <div class="flex gap-3">
+          <div class="w-9 h-9 bg-primary-600 rounded-full flex items-center justify-center text-white text-sm flex-shrink-0">🤖</div>
+          <div class="max-w-md">
+            <div class="bg-white border border-slate-200 rounded-2xl rounded-tl-sm p-4 shadow-sm">
+              <p class="text-sm text-slate-800 mb-3">Sí, se permite tener mascotas en los apartamentos de Las Palmas, sujeto a las siguientes condiciones según el <strong>Reglamento de Convivencia (sección 4.2)</strong>:</p>
+              <ul class="text-sm text-slate-700 space-y-1.5 mb-3">
+                <li class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5">✓</span>El peso máximo permitido es <strong>15 kg</strong> por mascota.</li>
+                <li class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5">✓</span>Máximo <strong>2 mascotas</strong> por apartamento.</li>
+                <li class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5">✓</span>En zonas comunes deben ir con <strong>correa y bozal</strong>.</li>
+                <li class="flex items-start gap-2"><span class="text-amber-500 mt-0.5">⚠️</span>Mascotas en ascensores deben ir en brazos o cargadero.</li>
+              </ul>
+              <div class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-500 flex items-center gap-2">
+                <span>📄</span>Fuente: <span class="font-medium text-slate-700">Reglamento de Convivencia v2.1, pág. 12</span>
+              </div>
+            </div>
+            <button class="mt-2 text-xs text-slate-400 hover:text-primary-600 transition-colors" id="helpBtn">¿Esta respuesta no te ayudó? Contactar administración →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Input -->
+      <div class="bg-white border-t border-slate-200 p-4">
+        <div class="flex gap-3">
+          <input id="chatInput" type="text" placeholder="Escribe tu pregunta sobre el reglamento..." onkeypress="if(event.key==='Enter')sendMessage()"
+            class="flex-1 px-4 py-3 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-primary-600 text-sm"/>
+          <button onclick="sendMessage()" class="bg-primary-600 hover:bg-primary-700 text-white px-5 rounded-2xl font-semibold transition-all active:scale-95 flex items-center gap-2 text-sm">
+            <span>📤</span><span class="hidden sm:inline" id="sendBtn">Enviar</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function sendSuggestion(btn){
+  document.getElementById('chatInput').value=btn.dataset.msg;
+  document.getElementById('suggestions').style.display='none';
+  sendMessage();
+}
+function sendMessage(){
+  const inp=document.getElementById('chatInput');
+  if(!inp.value.trim()) return;
+  const msgs=document.getElementById('chatMessages');
+  // Add user message
+  msgs.innerHTML+=`<div class="flex gap-3 justify-end"><div class="max-w-sm"><div class="bg-primary-600 rounded-2xl rounded-tr-sm p-4"><p class="text-sm text-white">${inp.value}</p></div></div><div class="w-9 h-9 bg-primary-100 rounded-full flex items-center justify-center text-primary-700 font-bold text-sm flex-shrink-0">CG</div></div>`;
+  // Typing indicator
+  msgs.innerHTML+=`<div class="flex gap-3" id="typing"><div class="w-9 h-9 bg-primary-600 rounded-full flex items-center justify-center text-white text-sm flex-shrink-0">🤖</div><div class="bg-white border border-slate-200 rounded-2xl p-4 typing"><span></span><span></span><span></span></div></div>`;
+  msgs.scrollTop=msgs.scrollHeight;
+  inp.value='';
+  setTimeout(()=>{
+    document.getElementById('typing').remove();
+    msgs.innerHTML+=`<div class="flex gap-3"><div class="w-9 h-9 bg-primary-600 rounded-full flex items-center justify-center text-white text-sm flex-shrink-0">🤖</div><div class="max-w-md"><div class="bg-white border border-slate-200 rounded-2xl rounded-tl-sm p-4 shadow-sm"><p class="text-sm text-slate-800">Encontré información relevante en los documentos del conjunto. ¿Te gustaría que te muestre más detalles sobre este tema?</p></div></div></div>`;
+    msgs.scrollTop=msgs.scrollHeight;
+  },1500);
+}
+function setLang(l){}
+</script>
+</body>
+</html>

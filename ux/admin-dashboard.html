@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Rexi — Dashboard</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800&display=swap" rel="stylesheet"/>
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],display:['Outfit','sans-serif']},colors:{primary:{50:'#f0fdfa',100:'#ccfbf1',500:'#14b8a6',600:'#0d9488',700:'#0f766e',900:'#134e4a'}}}}}</script>
+<style>
+body{font-family:'Inter',sans-serif;}
+.font-display{font-family:'Outfit',sans-serif;}
+.sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;font-size:14px;color:#475569;cursor:pointer;transition:all .15s;}
+.sidebar-link:hover,.sidebar-link.active{background:#f0fdfa;color:#0d9488;font-weight:600;}
+.sidebar-link.active{background:#ccfbf1;}
+.kpi-card{background:white;border-radius:16px;padding:24px;border:1px solid #e2e8f0;transition:all .2s;}
+.kpi-card:hover{box-shadow:0 8px 24px rgba(0,0,0,.08);transform:translateY(-2px);}
+</style>
+</head>
+<body class="bg-slate-50 min-h-screen flex">
+
+<!-- Sidebar -->
+<aside id="sidebar" class="w-64 bg-white border-r border-slate-200 flex flex-col fixed h-full z-20 transition-all duration-300 lg:relative lg:translate-x-0 -translate-x-full" style="min-height:100vh">
+  <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 bg-primary-600 rounded-xl flex items-center justify-center"><span class="text-white font-display font-bold text-lg">R</span></div>
+      <span class="font-display font-bold text-slate-800 text-lg">Rexi</span>
+    </div>
+    <button onclick="toggleSidebar()" class="lg:hidden text-slate-400 hover:text-slate-600">✕</button>
+  </div>
+  <!-- Complex selector -->
+  <div class="px-4 py-3 border-b border-slate-100">
+    <div class="bg-slate-50 rounded-xl px-3 py-2.5 flex items-center justify-between cursor-pointer hover:bg-slate-100 transition-all">
+      <div>
+        <p class="text-xs text-slate-400 font-medium">Conjunto</p>
+        <p class="text-sm font-semibold text-slate-800">Las Palmas</p>
+      </div>
+      <span class="text-slate-400 text-xs">▼</span>
+    </div>
+  </div>
+  <!-- Nav -->
+  <nav class="flex-1 p-3 space-y-0.5 overflow-y-auto">
+    <div class="sidebar-link active" onclick="window.location='admin-dashboard.html'"><span>📊</span><span data-es="Panel" data-en="Dashboard">Panel</span></div>
+    <div class="sidebar-link" onclick="window.location='complexes-list.html'"><span>🏢</span><span data-es="Conjuntos" data-en="Complexes">Conjuntos</span></div>
+    <div class="sidebar-link" onclick="window.location='owners-list.html'"><span>👥</span><span data-es="Propietarios" data-en="Owners">Propietarios</span></div>
+    <div class="sidebar-link"><span>🏠</span><span data-es="Arrendatarios" data-en="Tenants">Arrendatarios</span></div>
+    <div class="sidebar-link" onclick="window.location='fees-list.html'"><span>💰</span><span data-es="Cuotas" data-en="Fees">Cuotas</span></div>
+    <div class="sidebar-link"><span>💳</span><span data-es="Pagos" data-en="Payments">Pagos</span></div>
+    <div class="sidebar-link" onclick="window.location='visitors-list.html'"><span>🚶</span><span data-es="Visitantes" data-en="Visitors">Visitantes</span></div>
+    <div class="sidebar-link" onclick="window.location='vehicles-list.html'"><span>🚗</span><span data-es="Vehículos" data-en="Vehicles">Vehículos</span></div>
+    <div class="sidebar-link" onclick="window.location='common-areas.html'"><span>🏊</span><span data-es="Zonas Comunes" data-en="Common Areas">Zonas Comunes</span></div>
+    <div class="sidebar-link" onclick="window.location='fines-list.html'"><span>🚫</span><span data-es="Multas" data-en="Fines">Multas</span></div>
+    <div class="sidebar-link" onclick="window.location='notifications.html'"><span>🔔</span><span data-es="Notificaciones" data-en="Notifications">Notificaciones</span></div>
+    <div class="sidebar-link" onclick="window.location='ai-bot.html'"><span>🤖</span><span data-es="Documentos y Bot" data-en="Docs & Bot">Documentos y Bot</span></div>
+    <div class="sidebar-link" onclick="window.location='emergency-chat.html'"><span>🚨</span><span data-es="Emergencias" data-en="Emergency">Emergencias</span></div>
+    <div class="sidebar-link" onclick="window.location='reports.html'"><span>📈</span><span data-es="Informes" data-en="Reports">Informes</span></div>
+    <div class="sidebar-link" onclick="window.location='settings.html'"><span>⚙️</span><span data-es="Configuración" data-en="Settings">Configuración</span></div>
+  </nav>
+  <!-- User -->
+  <div class="p-4 border-t border-slate-100">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 bg-primary-100 rounded-full flex items-center justify-center text-primary-700 font-bold text-sm">AN</div>
+      <div class="flex-1 min-w-0">
+        <p class="text-sm font-semibold text-slate-800 truncate">Ana Martínez</p>
+        <p class="text-xs text-slate-400">Administradora</p>
+      </div>
+      <a href="login.html" class="text-slate-400 hover:text-red-500 text-sm" title="Salir">↩</a>
+    </div>
+  </div>
+</aside>
+
+<!-- Mobile overlay -->
+<div id="overlay" class="fixed inset-0 bg-black/40 z-10 hidden lg:hidden" onclick="toggleSidebar()"></div>
+
+<!-- Main -->
+<div class="flex-1 flex flex-col min-w-0">
+  <!-- Topbar -->
+  <header class="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between sticky top-0 z-10">
+    <div class="flex items-center gap-4">
+      <button onclick="toggleSidebar()" class="lg:hidden text-slate-500 hover:text-slate-700 text-xl">☰</button>
+      <div>
+        <h1 class="font-display font-bold text-xl text-slate-900" id="pageTitle">Panel de Control</h1>
+        <p class="text-xs text-slate-400" id="pageSubtitle">Las Palmas · Abril 2026</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-3">
+      <!-- Lang -->
+      <div class="hidden sm:flex items-center gap-1 bg-slate-100 rounded-xl p-1">
+        <button onclick="setLang('es')" class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 bg-white shadow-sm">ES</button>
+        <button onclick="setLang('en')" class="px-3 py-1.5 rounded-lg text-xs text-slate-500 hover:bg-white transition-all">EN</button>
+      </div>
+      <!-- Notifications -->
+      <button class="relative w-10 h-10 bg-slate-100 hover:bg-slate-200 rounded-xl flex items-center justify-center transition-all" onclick="window.location='notifications.html'">
+        <span class="text-lg">🔔</span>
+        <span class="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
+      </button>
+      <!-- Generate fees btn -->
+      <button class="hidden sm:flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-all shadow-sm">
+        <span>⚡</span><span id="genFeesBtn">Generar Cuotas</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <main class="flex-1 p-6 overflow-auto">
+
+    <!-- KPI Cards -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <div class="kpi-card">
+        <p class="text-xs font-medium text-slate-500 mb-1" data-es="Total Esperado" data-en="Total Expected">Total Esperado</p>
+        <p class="font-display font-bold text-2xl text-slate-900">$28.2M</p>
+        <div class="flex items-center gap-1 mt-2"><span class="text-emerald-500 text-xs font-semibold">↑ +3%</span><span class="text-xs text-slate-400">vs mes anterior</span></div>
+        <div class="h-1 bg-slate-100 rounded-full mt-3"><div class="h-1 bg-primary-500 rounded-full" style="width:100%"></div></div>
+      </div>
+      <div class="kpi-card">
+        <p class="text-xs font-medium text-slate-500 mb-1" data-es="Total Recaudado" data-en="Total Collected">Total Recaudado</p>
+        <p class="font-display font-bold text-2xl text-emerald-600">$23.5M</p>
+        <div class="flex items-center gap-1 mt-2"><span class="text-emerald-500 text-xs font-semibold">↑ +5%</span><span class="text-xs text-slate-400">vs mes anterior</span></div>
+        <div class="h-1 bg-slate-100 rounded-full mt-3"><div class="h-1 bg-emerald-500 rounded-full" style="width:83%"></div></div>
+      </div>
+      <div class="kpi-card">
+        <p class="text-xs font-medium text-slate-500 mb-1" data-es="Total en Mora" data-en="Total Overdue">Total en Mora</p>
+        <p class="font-display font-bold text-2xl text-red-600">$4.7M</p>
+        <div class="flex items-center gap-1 mt-2"><span class="text-red-500 text-xs font-semibold">↑ 10 aptos</span><span class="text-xs text-slate-400">con deuda</span></div>
+        <div class="h-1 bg-slate-100 rounded-full mt-3"><div class="h-1 bg-red-400 rounded-full" style="width:17%"></div></div>
+      </div>
+      <div class="kpi-card">
+        <p class="text-xs font-medium text-slate-500 mb-1" data-es="Tasa de Cobro" data-en="Collection Rate">Tasa de Cobro</p>
+        <p class="font-display font-bold text-2xl text-slate-900">83.3%</p>
+        <div class="flex items-center gap-1 mt-2"><span class="text-emerald-500 text-xs font-semibold">↑ +2pts</span><span class="text-xs text-slate-400">vs mes anterior</span></div>
+        <div class="h-1 bg-slate-100 rounded-full mt-3"><div class="h-1 bg-primary-500 rounded-full" style="width:83%"></div></div>
+      </div>
+    </div>
+
+    <!-- Charts row -->
+    <div class="grid lg:grid-cols-3 gap-4 mb-6">
+      <!-- Trend chart (SVG mockup) -->
+      <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200 p-6">
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <h2 class="font-semibold text-slate-800" data-es="Tendencia de Cobro" data-en="Payment Trend">Tendencia de Cobro</h2>
+            <p class="text-xs text-slate-400 mt-0.5">Últimos 6 meses</p>
+          </div>
+          <div class="flex items-center gap-4 text-xs">
+            <span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-primary-500 inline-block rounded"></span>Recaudado</span>
+            <span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-slate-300 inline-block rounded border-dashed"></span>Esperado</span>
+          </div>
+        </div>
+        <svg viewBox="0 0 500 160" class="w-full" style="height:160px">
+          <!-- Grid lines -->
+          <line x1="0" y1="40" x2="500" y2="40" stroke="#f1f5f9" stroke-width="1"/>
+          <line x1="0" y1="80" x2="500" y2="80" stroke="#f1f5f9" stroke-width="1"/>
+          <line x1="0" y1="120" x2="500" y2="120" stroke="#f1f5f9" stroke-width="1"/>
+          <!-- Expected line (dashed) -->
+          <polyline points="0,30 100,28 200,32 300,25 400,20 500,18" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="5,4"/>
+          <!-- Collected area -->
+          <polygon points="0,160 0,80 100,70 200,60 300,55 400,45 500,40 500,160" fill="#14b8a6" opacity="0.08"/>
+          <!-- Collected line -->
+          <polyline points="0,80 100,70 200,60 300,55 400,45 500,40" fill="none" stroke="#0d9488" stroke-width="2.5" stroke-linejoin="round"/>
+          <!-- Dots -->
+          <circle cx="0" cy="80" r="4" fill="#0d9488"/><circle cx="100" cy="70" r="4" fill="#0d9488"/>
+          <circle cx="200" cy="60" r="4" fill="#0d9488"/><circle cx="300" cy="55" r="4" fill="#0d9488"/>
+          <circle cx="400" cy="45" r="4" fill="#0d9488"/><circle cx="500" cy="40" r="4" fill="#0d9488"/>
+          <!-- X labels -->
+          <text x="0" y="155" font-size="10" fill="#94a3b8">Nov</text>
+          <text x="95" y="155" font-size="10" fill="#94a3b8">Dic</text>
+          <text x="193" y="155" font-size="10" fill="#94a3b8">Ene</text>
+          <text x="293" y="155" font-size="10" fill="#94a3b8">Feb</text>
+          <text x="393" y="155" font-size="10" fill="#94a3b8">Mar</text>
+          <text x="488" y="155" font-size="10" fill="#0d9488" font-weight="600">Abr</text>
+        </svg>
+      </div>
+      <!-- Donut chart -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-6">
+        <h2 class="font-semibold text-slate-800 mb-6" data-es="Estado de Cuotas" data-en="Fee Status">Estado de Cuotas</h2>
+        <div class="flex justify-center mb-6">
+          <svg viewBox="0 0 120 120" width="120" height="120">
+            <circle cx="60" cy="60" r="45" fill="none" stroke="#f1f5f9" stroke-width="18"/>
+            <!-- Paid 83% -->
+            <circle cx="60" cy="60" r="45" fill="none" stroke="#10b981" stroke-width="18" stroke-dasharray="235 283" stroke-dashoffset="-0" transform="rotate(-90 60 60)"/>
+            <!-- Overdue 10% -->
+            <circle cx="60" cy="60" r="45" fill="none" stroke="#ef4444" stroke-width="18" stroke-dasharray="28 283" stroke-dashoffset="-235" transform="rotate(-90 60 60)"/>
+            <!-- Partial 7% -->
+            <circle cx="60" cy="60" r="45" fill="none" stroke="#f59e0b" stroke-width="18" stroke-dasharray="20 283" stroke-dashoffset="-263" transform="rotate(-90 60 60)"/>
+            <text x="60" y="57" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">60</text>
+            <text x="60" y="70" text-anchor="middle" font-size="9" fill="#94a3b8">aptos</text>
+          </svg>
+        </div>
+        <div class="space-y-2.5">
+          <div class="flex items-center justify-between text-sm"><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 bg-emerald-500 rounded-full"></span><span class="text-slate-600">Pagados</span></div><span class="font-semibold text-slate-800">50 (83%)</span></div>
+          <div class="flex items-center justify-between text-sm"><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 bg-red-500 rounded-full"></span><span class="text-slate-600">En mora</span></div><span class="font-semibold text-slate-800">6 (10%)</span></div>
+          <div class="flex items-center justify-between text-sm"><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 bg-amber-400 rounded-full"></span><span class="text-slate-600">Parcial</span></div><span class="font-semibold text-slate-800">4 (7%)</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom row -->
+    <div class="grid lg:grid-cols-2 gap-4">
+      <!-- Activity feed -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-6">
+        <div class="flex items-center justify-between mb-5">
+          <h2 class="font-semibold text-slate-800" data-es="Actividad Reciente" data-en="Recent Activity">Actividad Reciente</h2>
+          <button class="text-xs text-primary-600 hover:underline font-medium">Ver todo →</button>
+        </div>
+        <div class="space-y-4">
+          <div class="flex items-start gap-3"><div class="w-8 h-8 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0"><span class="text-base">📦</span></div><div class="flex-1 min-w-0"><p class="text-sm font-medium text-slate-800">Paquete recibido — Apto 101-A</p><p class="text-xs text-slate-400">hace 5 minutos · Pedro Gómez (vigilante)</p></div></div>
+          <div class="flex items-start gap-3"><div class="w-8 h-8 bg-emerald-100 rounded-xl flex items-center justify-center flex-shrink-0"><span class="text-base">💰</span></div><div class="flex-1 min-w-0"><p class="text-sm font-medium text-slate-800">Pago registrado — Apto 203-B</p><p class="text-xs text-slate-400">hace 22 minutos · $470,000 · Transferencia</p></div></div>
+          <div class="flex items-start gap-3"><div class="w-8 h-8 bg-slate-100 rounded-xl flex items-center justify-center flex-shrink-0"><span class="text-base">🚗</span></div><div class="flex-1 min-w-0"><p class="text-sm font-medium text-slate-800">Ingreso vehículo ABC-123</p><p class="text-xs text-slate-400">hace 45 minutos · Carlos García · Apto 101-A</p></div></div>
+          <div class="flex items-start gap-3"><div class="w-8 h-8 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0"><span class="text-base">🚫</span></div><div class="flex-1 min-w-0"><p class="text-sm font-medium text-slate-800">Multa enviada a aprobación — Apto 405</p><p class="text-xs text-slate-400">hace 1 hora · Ruido excesivo · $100,000</p></div></div>
+          <div class="flex items-start gap-3"><div class="w-8 h-8 bg-purple-100 rounded-xl flex items-center justify-center flex-shrink-0"><span class="text-base">👤</span></div><div class="flex-1 min-w-0"><p class="text-sm font-medium text-slate-800">Visitante autorizado — Apto 310</p><p class="text-xs text-slate-400">hace 1.5 horas · Juan Pérez · QR escaneado</p></div></div>
+        </div>
+      </div>
+
+      <!-- Overdue apartments -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-6">
+        <div class="flex items-center justify-between mb-5">
+          <h2 class="font-semibold text-slate-800" data-es="Apartamentos en Mora" data-en="Overdue Apartments">Apartamentos en Mora</h2>
+          <a href="fees-list.html" class="text-xs text-primary-600 hover:underline font-medium">Ver todos →</a>
+        </div>
+        <div class="space-y-3">
+          <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 transition-all cursor-pointer">
+            <div class="w-9 h-9 bg-red-100 rounded-xl flex items-center justify-center text-sm font-bold text-red-600">A</div>
+            <div class="flex-1 min-w-0"><p class="text-sm font-semibold text-slate-800">101-A · Torre A</p><p class="text-xs text-slate-400">Carlos García · <span class="text-red-500 font-medium">12 días en mora</span></p></div>
+            <div class="text-right"><p class="text-sm font-bold text-red-600">$470K</p><button class="text-xs text-primary-600 hover:underline mt-0.5">Recordar</button></div>
+          </div>
+          <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 transition-all cursor-pointer">
+            <div class="w-9 h-9 bg-red-100 rounded-xl flex items-center justify-center text-sm font-bold text-red-600">B</div>
+            <div class="flex-1 min-w-0"><p class="text-sm font-semibold text-slate-800">203-B · Torre B</p><p class="text-xs text-slate-400">María Rodríguez · <span class="text-red-500 font-medium">8 días en mora</span></p></div>
+            <div class="text-right"><p class="text-sm font-bold text-red-600">$310K</p><button class="text-xs text-primary-600 hover:underline mt-0.5">Recordar</button></div>
+          </div>
+          <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 transition-all cursor-pointer">
+            <div class="w-9 h-9 bg-red-100 rounded-xl flex items-center justify-center text-sm font-bold text-red-600">A</div>
+            <div class="flex-1 min-w-0"><p class="text-sm font-semibold text-slate-800">304-A · Torre A</p><p class="text-xs text-slate-400">Jorge Suárez · <span class="text-red-500 font-medium">5 días en mora</span></p></div>
+            <div class="text-right"><p class="text-sm font-bold text-red-600">$235K</p><button class="text-xs text-primary-600 hover:underline mt-0.5">Recordar</button></div>
+          </div>
+          <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 transition-all cursor-pointer">
+            <div class="w-9 h-9 bg-amber-100 rounded-xl flex items-center justify-center text-sm font-bold text-amber-600">A</div>
+            <div class="flex-1 min-w-0"><p class="text-sm font-semibold text-slate-800">501-A · Torre A</p><p class="text-xs text-slate-400">Luisa Mora · <span class="text-amber-600 font-medium">Parcial</span></p></div>
+            <div class="text-right"><p class="text-sm font-bold text-amber-600">$180K</p><button class="text-xs text-primary-600 hover:underline mt-0.5">Recordar</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+function toggleSidebar(){
+  const s=document.getElementById('sidebar'), o=document.getElementById('overlay');
+  const open=s.classList.contains('-translate-x-full');
+  s.classList.toggle('-translate-x-full',!open);
+  s.classList.toggle('translate-x-0',open);
+  o.classList.toggle('hidden',!open);
+}
+function setLang(l){
+  document.querySelectorAll('[data-es]').forEach(el=>{el.textContent=el.getAttribute('data-'+l);});
+  document.getElementById('pageTitle').textContent=l==='es'?'Panel de Control':'Dashboard';
+  document.getElementById('pageSubtitle').textContent=l==='es'?'Las Palmas · Abril 2026':'Las Palmas · April 2026';
+  document.getElementById('genFeesBtn').textContent=l==='es'?'Generar Cuotas':'Generate Fees';
+}
+</script>
+</body>
+</html>

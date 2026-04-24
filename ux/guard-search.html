@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Rexi — Vigilancia</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800&display=swap" rel="stylesheet"/>
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],display:['Outfit','sans-serif']},colors:{primary:{50:'#f0fdfa',100:'#ccfbf1',600:'#0d9488',700:'#0f766e'}}}}}</script>
+<style>body{font-family:'Inter',sans-serif;}.font-display{font-family:'Outfit',sans-serif;}</style>
+</head>
+<body class="bg-slate-900 min-h-screen text-white flex flex-col">
+
+  <!-- Guard header -->
+  <header class="bg-slate-800 border-b border-slate-700 px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 bg-primary-600 rounded-xl flex items-center justify-center"><span class="font-display font-bold text-xl">R</span></div>
+      <div><p class="font-display font-bold text-lg">REXI SECURITY</p><p class="text-slate-400 text-xs" id="timeLabel">Las Palmas · 10:45 AM</p></div>
+    </div>
+    <div class="flex items-center gap-3">
+      <div class="flex items-center gap-1 bg-slate-700 rounded-xl p-1">
+        <button onclick="setLang('es')" class="px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-slate-600">ES</button>
+        <button onclick="setLang('en')" class="px-3 py-1.5 rounded-lg text-xs text-slate-400">EN</button>
+      </div>
+      <a href="guard-camera.html" class="flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl">🎥 <span id="cameraBtn">Cámara Facial</span></a>
+    </div>
+  </header>
+
+  <main class="flex-1 p-6 max-w-4xl mx-auto w-full">
+
+    <!-- Search area -->
+    <div class="mb-8">
+      <h1 class="font-display font-bold text-3xl mb-2" id="searchTitle">Buscar Residente o Vehículo</h1>
+      <p class="text-slate-400 text-sm mb-6" id="searchHint">Ingresa la placa, código QR o número de identificación</p>
+      <div class="flex gap-3">
+        <div class="relative flex-1">
+          <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg">🔍</span>
+          <input id="searchInput" type="text" placeholder="ABC-123 · REXI-VIS-001 · 12345678" oninput="search(this.value)"
+            class="w-full bg-slate-800 border border-slate-600 rounded-2xl pl-12 pr-4 py-4 text-white text-lg placeholder-slate-500 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/30 transition-all"/>
+        </div>
+        <a href="visitor-qr.html" class="bg-slate-700 hover:bg-slate-600 text-white px-5 rounded-2xl flex items-center gap-2 text-sm font-medium transition-all">📷 <span class="hidden sm:inline" id="scanBtn">Escanear QR</span></a>
+      </div>
+
+      <!-- Quick action chips -->
+      <div class="flex gap-3 mt-4 flex-wrap">
+        <button onclick="showResult('authorized')" class="bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-xl px-4 py-2.5 text-sm font-medium transition-all flex items-center gap-2"><span>🚗</span><span id="chip1">Por placa</span></button>
+        <button onclick="showResult('visitor')" class="bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-xl px-4 py-2.5 text-sm font-medium transition-all flex items-center gap-2"><span>📱</span><span id="chip2">Por QR</span></button>
+        <button onclick="showResult('notfound')" class="bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-xl px-4 py-2.5 text-sm font-medium transition-all flex items-center gap-2"><span>👤</span><span id="chip3">Por cédula</span></button>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div id="resultArea" class="hidden mb-8">
+
+      <!-- AUTHORIZED result -->
+      <div id="resultAuthorized" class="hidden bg-emerald-900/50 border-2 border-emerald-500 rounded-3xl p-6">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-12 h-12 bg-emerald-500 rounded-2xl flex items-center justify-center text-2xl">✅</div>
+          <div><p class="font-display font-bold text-2xl text-emerald-400" id="authLabel">AUTORIZADO</p><p class="text-emerald-300 text-sm" id="authSub">Residente registrado en el conjunto</p></div>
+        </div>
+        <div class="flex flex-col sm:flex-row items-start gap-5">
+          <div class="w-20 h-20 bg-slate-700 rounded-2xl flex items-center justify-center text-4xl flex-shrink-0">👤</div>
+          <div class="flex-1 grid sm:grid-cols-2 gap-3">
+            <div><p class="text-slate-400 text-xs mb-0.5">Nombre</p><p class="font-semibold text-white text-lg">Carlos García</p></div>
+            <div><p class="text-slate-400 text-xs mb-0.5" id="aptLabel">Apartamento</p><p class="font-semibold text-white text-lg">101-A · Torre A</p></div>
+            <div><p class="text-slate-400 text-xs mb-0.5" id="roleLabel">Rol</p><p class="font-semibold text-white">Propietario</p></div>
+            <div><p class="text-slate-400 text-xs mb-0.5" id="vehicLabel">Vehículo</p><p class="font-semibold text-white font-mono">ABC-123 · Toyota Azul</p></div>
+          </div>
+        </div>
+        <div class="flex gap-3 mt-6">
+          <button onclick="logAccess('entry')" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-2xl text-lg transition-all active:scale-95" id="entryBtn">✅ Registrar Entrada</button>
+          <button onclick="logAccess('exit')" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-bold py-4 rounded-2xl text-lg transition-all" id="exitBtn">🚪 Registrar Salida</button>
+        </div>
+      </div>
+
+      <!-- VISITOR result -->
+      <div id="resultVisitor" class="hidden bg-blue-900/50 border-2 border-blue-500 rounded-3xl p-6">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-12 h-12 bg-blue-500 rounded-2xl flex items-center justify-center text-2xl">👋</div>
+          <div><p class="font-display font-bold text-2xl text-blue-400" id="visLabel">VISITANTE AUTORIZADO</p><p class="text-blue-300 text-sm" id="visSub">QR válido · Visita temporal</p></div>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-3 mb-5">
+          <div><p class="text-slate-400 text-xs mb-0.5">Visitante</p><p class="font-semibold text-white text-lg">Juan Pérez</p></div>
+          <div><p class="text-slate-400 text-xs mb-0.5">Visita a</p><p class="font-semibold text-white">Apto 101-A · Carlos García</p></div>
+          <div><p class="text-slate-400 text-xs mb-0.5">Vence</p><p class="font-semibold text-emerald-400">25 abr 2026 · 3 días</p></div>
+          <div><p class="text-slate-400 text-xs mb-0.5">Vehículo</p><p class="font-semibold font-mono text-white">ABC-123</p></div>
+        </div>
+        <button onclick="logAccess('visitor')" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl text-lg transition-all">✅ Permitir Ingreso</button>
+      </div>
+
+      <!-- NOT FOUND result -->
+      <div id="resultNotFound" class="hidden bg-red-900/50 border-2 border-red-500 rounded-3xl p-6">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-12 h-12 bg-red-500 rounded-2xl flex items-center justify-center text-2xl">❌</div>
+          <div><p class="font-display font-bold text-2xl text-red-400" id="denyLabel">NO AUTORIZADO</p><p class="text-red-300 text-sm" id="denySub">No encontrado en el sistema</p></div>
+        </div>
+        <p class="text-slate-300 text-sm mb-6" id="denyMsg">La placa o documento no está registrado en este conjunto. Solicite identificación adicional y contacte al administrador si es necesario.</p>
+        <div class="flex gap-3">
+          <button onclick="hideResult()" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-semibold py-3.5 rounded-2xl" id="retryBtn">🔍 Nueva búsqueda</button>
+          <button class="flex-1 bg-red-700 hover:bg-red-800 text-white font-semibold py-3.5 rounded-2xl" id="reportBtn">⚠️ Reportar incidente</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Today's log -->
+    <div>
+      <h2 class="font-semibold text-slate-300 mb-4 flex items-center gap-2" id="logTitle"><span>📋</span> Registro de hoy</h2>
+      <div class="space-y-3">
+        <div class="bg-slate-800 rounded-2xl p-4 flex items-center gap-4"><div class="w-2 h-2 bg-emerald-500 rounded-full flex-shrink-0"></div><div class="flex-1"><p class="text-sm font-medium text-white">Carlos García · Apto 101-A</p><p class="text-xs text-slate-400">Entrada · 09:45 AM · Vehículo ABC-123</p></div><span class="text-xs bg-emerald-900 text-emerald-400 px-2.5 py-1 rounded-lg font-medium">Entrada</span></div>
+        <div class="bg-slate-800 rounded-2xl p-4 flex items-center gap-4"><div class="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></div><div class="flex-1"><p class="text-sm font-medium text-white">Juan Pérez (Visitante) → Apto 101-A</p><p class="text-xs text-slate-400">QR escaneado · 09:30 AM</p></div><span class="text-xs bg-blue-900 text-blue-400 px-2.5 py-1 rounded-lg font-medium">Visitante</span></div>
+        <div class="bg-slate-800 rounded-2xl p-4 flex items-center gap-4"><div class="w-2 h-2 bg-red-500 rounded-full flex-shrink-0"></div><div class="flex-1"><p class="text-sm font-medium text-white">Placa XYZ-999 · Desconocido</p><p class="text-xs text-slate-400">Acceso denegado · 09:20 AM</p></div><span class="text-xs bg-red-900 text-red-400 px-2.5 py-1 rounded-lg font-medium">Denegado</span></div>
+        <div class="bg-slate-800 rounded-2xl p-4 flex items-center gap-4"><div class="w-2 h-2 bg-slate-500 rounded-full flex-shrink-0"></div><div class="flex-1"><p class="text-sm font-medium text-white">María Rodríguez · Apto 203-B</p><p class="text-xs text-slate-400">Salida · 08:15 AM</p></div><span class="text-xs bg-slate-700 text-slate-400 px-2.5 py-1 rounded-lg font-medium">Salida</span></div>
+      </div>
+    </div>
+  </main>
+
+<script>
+function search(v){if(v.length>3)showResult(v.includes('ABC')&&!v.includes('999')?'authorized':v.startsWith('REXI')?'visitor':'notfound');}
+function showResult(type){
+  document.getElementById('resultArea').classList.remove('hidden');
+  ['Authorized','Visitor','NotFound'].forEach(t=>document.getElementById('result'+t).classList.add('hidden'));
+  document.getElementById('result'+type.charAt(0).toUpperCase()+type.slice(1)).classList.remove('hidden');
+}
+function hideResult(){document.getElementById('resultArea').classList.add('hidden');document.getElementById('searchInput').value='';}
+function logAccess(t){alert(t==='entry'?'✅ Entrada registrada exitosamente.':t==='exit'?'🚪 Salida registrada.':'✅ Ingreso de visitante registrado.');hideResult();}
+// Clock
+setInterval(()=>{document.getElementById('timeLabel').textContent='Las Palmas · '+new Date().toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'});},1000);
+function setLang(l){}
+</script>
+</body>
+</html>
